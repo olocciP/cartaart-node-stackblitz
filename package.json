@@ -1,7 +1,29 @@
 {
-  "name": "node-starter",
-  "version": "0.0.0",
+  "name": "cartaart",
+  "version": "1.0.0",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  }
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "mysql": "^2.18.1",
+    "node": "^12.13.1",
+    "prettier": "^2.7.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dxedutech/cartaart.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dxedutech/cartaart/issues"
+  },
+  "homepage": "https://github.com/dxedutech/cartaart#readme",
+  "devDependencies": {},
+  "description": ""
 }

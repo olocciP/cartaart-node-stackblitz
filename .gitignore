@@ -1,0 +1,6 @@
+*.bck
+*.node_modules
+token.rtf
+.prettierrc
+.vscode
+.DS_store
