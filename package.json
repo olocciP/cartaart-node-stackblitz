@@ -18,11 +18,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dxedutech/cartaart.git"
+    "url": "git+https://github.com/dxedutech/cartaart-node-stackblitz.git"
   },
   "bugs": {
-    "url": "https://github.com/dxedutech/cartaart/issues"
+    "url": "https://github.com/dxedutech/cartaart-node-stackblitz/issues"
   },
-  "homepage": "https://github.com/dxedutech/cartaart#readme",
+  "homepage": "https://github.com/dxedutech/cartaart-node-stackblitz#readme",
   "description": ""
 }
