@@ -1,13 +1,18 @@
-require('dotenv').config();
+require('dotenv').config(); /*/ Installation required > npm i dotenv /*/
 
 const HTTP = require('http');
 const URL = require('url');
 
 const port = process.argv[2] || process.env.PORT;
-const start = (route, handle) => {
+const start = v => {
+  const { route, handle } = v;
+
 	HTTP.createServer((req, res) => {
-		const pathname = URL.parse(req.url).pathname;
-		route(handle, pathname, res, req);
+		v.path = URL.parse(req.url).pathname;
+    v.req = req;
+    v.res = res;
+
+		route(v);
 	}).listen(parseInt(port, 10));
 };
 

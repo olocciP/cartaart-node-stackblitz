@@ -1,7 +1,9 @@
 const FS = require('fs');
 const PATH = require('path');
 
-const route = (handle, path, res, req) => {
+const route = v => {
+  const { handle, path, req, res } = v;
+
 	const staticMap = {
 		'.ico': 'image/x-icon',
 		'.html': 'text/html',
@@ -23,11 +25,12 @@ const route = (handle, path, res, req) => {
 
 	if (typeof handle[path] === 'function') {
 		console.log(path);
-		handle[path]({ res: res, req: req, path: path });
+		handle[path]({ req: req, res: res, path: path });
+
 	} else {
 		const staticPath = /*/ 정적파일 위치를 나타낸다 /*/ __dirname + '/www'; 
 		const extension =  /*/ 확장자를 나타낸다 /*/ PATH.extname(path);
-
+    console.log(staticPath, extension);
 		if (staticMap[extension]) {
 			/*/ Static files in www을 나타낸다 /*/
 			FS.readFile(staticPath + path, (err, data) => {

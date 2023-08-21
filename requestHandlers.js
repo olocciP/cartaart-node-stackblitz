@@ -1,23 +1,25 @@
 const FS = require('fs');
 
 module.exports = {
-	file: (_a) => {
-		let { res, req, path } = _a;
+	file: v => {
+		const { res, req, path } = v;
 
-		path = path === '/' ? '/index' : path;
-    console.log(path);
-		FS.readFile(__dirname + `/www/${path}.html`, (err, data) => {
+		v.p = path === '/' ? '/index' : path;
+    console.log('file '+ v.p);
+		FS.readFile(__dirname + `/www/${v.p}.html`, (err, data) => {
 			res.writeHead(200, { 'Content-Type': 'text/html' });
 			res.end(data);
 		});
 	},
 
-	require: (_a) => {
-		let { res, req, path } = _a;
-		path = path === '/' ? '/home' : path;
+	require: v => {
+		const { res, req, path } = v;
+
+		v.p = path === '/' ? '/home' : path;
+    console.log('require '+ v.p);
 		res.writeHead(200, { 'Content-Type': 'text/html' });
 
-		_a.data = require(`./www/work${path}`).html;
+		_a.data = require(`./www/work${v.p}`).html;
 		res.end(_a.data);
 	}
 };
