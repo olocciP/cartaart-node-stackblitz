@@ -22,24 +22,16 @@ const route = (handle, path, res, req) => {
 	};
 
 	if (typeof handle[path] === 'function') {
-		// console.log(path);
+		console.log(path);
 		handle[path]({ res: res, req: req, path: path });
 	} else {
-		const staticPath = __dirname + '/public'; ///. 정적파일 위를 나타낸다
-		const extension = PATH.extname(path); // 확장자를 나타낸다
+		const staticPath = /*/ 정적파일 위치를 나타낸다 /*/ __dirname + '/www'; 
+		const extension =  /*/ 확장자를 나타낸다 /*/ PATH.extname(path);
 
 		if (staticMap[extension]) {
-			///. Static files in public을 나타낸다
+			/*/ Static files in www을 나타낸다 /*/
 			FS.readFile(staticPath + path, (err, data) => {
-				// res.writeHead(200, { 'Content-Type': staticMap[extension] });
-        res.writeHead(200, {
-          'Content-Type': staticMap[extension],
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Request-Methods' : 'GET, POST, PUT, DELETE',
-          'Access-Control-Max-Age' : '60',
-          'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Content-Length, API-Key, Accept'
-        });
-    
+				res.writeHead(200, { 'Content-Type': staticMap[extension] });
 				res.end(data);
 			});
 		} else {

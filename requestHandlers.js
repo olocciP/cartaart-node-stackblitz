@@ -4,9 +4,9 @@ module.exports = {
 	file: (_a) => {
 		let { res, req, path } = _a;
 
-		path = path === '/' ? '/main' : path;
-
-		FS.readFile(__dirname + `/public/ctx${path}.html`, (err, data) => {
+		path = path === '/' ? '/index' : path;
+    console.log(path);
+		FS.readFile(__dirname + `/www/${path}.html`, (err, data) => {
 			res.writeHead(200, { 'Content-Type': 'text/html' });
 			res.end(data);
 		});
@@ -14,10 +14,10 @@ module.exports = {
 
 	require: (_a) => {
 		let { res, req, path } = _a;
-		path = path === '/' ? '/main' : path;
+		path = path === '/' ? '/home' : path;
 		res.writeHead(200, { 'Content-Type': 'text/html' });
 
-		_a.data = require(`./public/ctx${path}`).html;
+		_a.data = require(`./www/work${path}`).html;
 		res.end(_a.data);
 	}
 };
