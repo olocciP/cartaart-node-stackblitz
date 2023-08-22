@@ -24,19 +24,19 @@ const route = v => {
 	};
 
 	if (typeof handle[path] === 'function') {
-		console.log(path);
 		handle[path]({ req: req, res: res, path: path });
 
 	} else {
 		const staticPath = /*/ 정적파일 위치를 나타낸다 /*/ __dirname + '/www'; 
 		const extension =  /*/ 확장자를 나타낸다 /*/ PATH.extname(path);
-    console.log(staticPath, extension);
+
 		if (staticMap[extension]) {
 			/*/ Static files in www을 나타낸다 /*/
 			FS.readFile(staticPath + path, (err, data) => {
 				res.writeHead(200, { 'Content-Type': staticMap[extension] });
 				res.end(data);
 			});
+			
 		} else {
 			FS.readFile('./views/404.html', (err, data) => {
 				res.writeHead(404, { 'Content-Type': 'text/html' });

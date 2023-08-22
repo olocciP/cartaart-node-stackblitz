@@ -576,23 +576,23 @@
         this.setsize = v => {
           const { dpr, shadow } = v;
 
-          const w = window.innerWidth/this.width;
-          const h = window.innerHeight/this.height;
-          const r = w < h ? w : h;
+          this.w = window.innerWidth/this.width;
+          this.h = window.innerHeight/this.height;
+          this.r = this.w > this.h ? this.w : this.h;
+          this.x = window.innerWidth - this.width*this.r;
+          this.y = window.innerHeight - this.height*this.r;
 
-          const x = window.innerWidth - this.width*r;
-          const y = window.innerHeight - this.height*r;
-          this.cs.style.left = `${x*0.5}px`;
-          this.cs.style.top = `${y*0.5}px`;
+          this.cs.style.left = `${this.x*0.5}px`;
+          this.cs.style.top = `${this.y*0.5}px`;
 
-          this.cs.style.width = `${this.width*r}px`;
-          this.cs.style.height = `${this.height*r}px`;
+          this.cs.style.width = `${this.width*this.r}px`;
+          this.cs.style.height = `${this.height*this.r}px`;
 
-          this.cs.width = this.width*dpr*r;
-          this.cs.height = this.height*dpr*r;
+          this.cs.width = this.width*dpr*this.r;
+          this.cs.height = this.height*dpr*this.r;
 
-          this.scale = dpr*r;
-          this.cx.scale(dpr*r, dpr*r);
+          this.scale = dpr*this.r;
+          this.cx.scale(dpr*this.r, dpr*this.r);
           this.bcr = this.cs.getBoundingClientRect();
 
           this.cx.shadowColor = shadow.c;
