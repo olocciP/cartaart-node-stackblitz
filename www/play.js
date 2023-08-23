@@ -307,7 +307,7 @@ const setload = v => {
     Object.keys(hPack.evts /*/ EVenTS /*/).forEach(e => hPlay['put'+hPack.evts[e].type](hPack.evts[e]));
     Object.keys(hPack.efts /*/ EFfecTS /*/).forEach(e => hPlay['set'+hPack.efts[e].type](hPack.efts[e]));
     
-    hPlay.fb.set({ ps: hPart.fbps /*/ Flip Book PageS - array /*/, cx: cx, pos: hPlay.pos });
+    hPlay.fb.set({ ps: hPart.fbps /*/ Flip Book PageS - array /*/, cx: cx, pos: hPlay.pos, r: hPage.r });
 
     Object.keys(hPart.traces /*/ tracing alphabets /*/).forEach(e => {
       hPlay.trace.set({ tr: hPart.traces[e], cx: cx, pos: hPlay.pos, scale: hPage.scale, dpr: hPlan.wds.dpr });
