@@ -240,7 +240,7 @@
         on: false, /*/ true, false /*/
         off: 0, /*/ -1, 0 ,1 /*/
         page: 0,
-        count: 0, /*/ Must be even - 0,1 2,3 4,5 6,7 8,9 10,11 ... 26, 26 page, 13 sheet /*/
+        len: 0, /*/ Must be even - 0,1 2,3 4,5 6,7 8,9 10,11 ... 26, 26 page, 13 sheet /*/
         skip: [],
         // color: [],
         // img: [],
@@ -272,10 +272,11 @@
           const { n } = v;
 
           cx.save();
+          const l = this.len;
+
+          /*/ Static Page /*/ 
           /*/ Left page : '' & Right page : 'C' /*/
-          // const l = ps.length;
-          const l = this.count;
-          const sp = {}; /// Static Page
+          const sp = {};
           if (Math.abs(this.off)) {
             sp.l = this.off > 0 ? ps[(l + n - 1) % l] : ps[(l + n - 2) % l];
             sp.r = this.off > 0 ? ps[(l + n + 2) % l] : ps[(l + n + 1) % l];
@@ -283,7 +284,7 @@
             sp.l = ps[(l + n + 1) % l];
             sp.r = ps[(l + n) % l];
           }
-          // console.log(n);
+
           setdraw({ c: sp.l.c[0], t: sp.l.str[0], xy: sp.l.xy[0], wh: sp.l.wh[0] });
           if((Math.abs(this.off) && n === l - 2) || (Math.abs(this.off) && n === l - 1)) { /* Doesn't draw 0 page at mouse move - A */ } 
           else { setdraw({ c: sp.r.c[0], t: sp.r.str[0], xy: sp.r.xy[0], wh: sp.r.wh[0] }); }
@@ -348,6 +349,7 @@
           /*/ Continue Flip or Cancel Flip position /*/
           } else {
             if (Math.abs(this.off)) { /// Continue Flip
+              console.log(pos);
               if (pos.xy[0].x * pos.xy[0].y) {
                 pos.xy[1].x = pos.xy[1].x*pos.g;
                 pos.xy[1].y = pos.xy[1].y*pos.g;
@@ -405,15 +407,15 @@
       Play.prototype.trace = { str: [], len: 0, cnt: 0 }; /*/ Alphabet STRing: ['a', 'l', 'p', ...], LENgth, CouNT /*/
       
       Play.prototype.trace.set = function(v) {
-        const { ct, cx, pos, scale, dpr } = v;
+        const { tr, cx, pos, scale, dpr } = v;
 
         cx.save();
         cx.beginPath();
         
         // cx.lineCap = 'butt'
-        Object.keys(ct.p2s).forEach((k, i) => {
+        Object.keys(tr.p2s).forEach((k, i) => {
           if(i){ /*/ 0: Alphabet, 1~: Stroke /*/
-            const t = ct.p2s[k].t; /*/ Tracing shape - Path2d & Style /*/
+            const t = tr.p2s[k].t; /*/ Tracing shape - Path2d & Style /*/
             if(t.s['stroke-width'] !== undefined){ /*/ Tracing Style /*/
               cx.lineWidth = t.s['stroke-width'];
               if (t.s.fill === '#fff') { cx.setLineDash([5, 15]); } else { cx.setLineDash([]); }
@@ -425,76 +427,76 @@
           }
         });
 
-        if(this.str[this.cnt] !== ct.code) return; /*/ Current tracing shape - Current Alphabet /*/
+        if(this.str[this.cnt] !== tr.code) return; /*/ Current tracing shape - Current Alphabet /*/
 
-        const p = ct.p2s['l'+ ct.ss.cnt].p; /*/ Tracing stroke - path2d /*/
+        const p = tr.p2s['l'+ tr.ss.cnt].p; /*/ Tracing stroke - path2d /*/
         cx.lineWidth = p.s['stroke-width'];
         cx.setLineDash([5, 15]);
         cx.strokeStyle = p.s.stroke;
         cx.stroke(p.p); /*/ Tracing Path /*/
         cx.restore();
 
-        const len = ct.tps.ss.length;
+        const len = tr.tps.ss.length;
 
-        if (Object.keys(pos.start).length) { ct.drag = { x: pos.start.x , y: pos.start.y }; }
+        if (Object.keys(pos.start).length) { tr.drag = { x: pos.start.x , y: pos.start.y }; }
 
-        if (Object.keys(ct.drag).length) {
+        if (Object.keys(tr.drag).length) {
           if(!len){ /*/ start tracing /*/
             const x = p.t.getPointAtLength(0).x;
             const y = p.t.getPointAtLength(0).y;
-            ct.tps.ss.push({ x: x, y: y });
-            ct.tps.len = parseInt(p.t.getTotalLength()/ct.tps.dis);
-            ct.sdr = p.t.getTotalLength()/ct.tps.len; /*/ Shifting Distance Rate /*/
-            ct.drag = { x: x , y: y };
+            tr.tps.ss.push({ x: x, y: y });
+            tr.tps.len = parseInt(p.t.getTotalLength()/tr.tps.dis);
+            tr.sdr = p.t.getTotalLength()/tr.tps.len; /*/ Shifting Distance Rate /*/
+            tr.drag = { x: x , y: y };
 
           } else { /*/ continue tracing /*/
-            const x = ct.tps.ss[len - 1].x;
-            const y = ct.tps.ss[len - 1].y;
+            const x = tr.tps.ss[len - 1].x;
+            const y = tr.tps.ss[len - 1].y;
             const d = Math.sqrt(Math.pow(x - pos.move.x*dpr/scale, 2) + Math.pow(y - pos.move.y*dpr/scale, 2));
             
-            if (d < ct.tps.dis*3*dpr) { ct.drag = { x: x , y: y }; }
-            else { ct.drag = {}; }
+            if (d < tr.tps.dis*3*dpr) { tr.drag = { x: x , y: y }; }
+            else { tr.drag = {}; }
           }
         }
 
-        if (Object.keys(ct.drag).length && Object.keys(pos.move).length && len && len < ct.tps.len) {
-          const t = ct.p2s['l'+ ct.ss.cnt].t; /*/ Tracing shape - path2d /*/
+        if (Object.keys(tr.drag).length && Object.keys(pos.move).length && len && len < tr.tps.len) {
+          const t = tr.p2s['l'+ tr.ss.cnt].t; /*/ Tracing shape - path2d /*/
 
           if(cx.isPointInPath(t.p, pos.move.x*dpr, pos.move.y*dpr)) {
-            const x = ct.tps.ss[len - 1].x;
-            const y = ct.tps.ss[len - 1].y;
+            const x = tr.tps.ss[len - 1].x;
+            const y = tr.tps.ss[len - 1].y;
 
             const d = Math.sqrt(Math.pow(x - pos.move.x*dpr/scale, 2) + Math.pow(y - pos.move.y*dpr/scale, 2));
-            if (d > ct.tps.dis) {
-              const x = p.t.getPointAtLength(ct.sdr*len).x; /*/ Shifting Distance x /*/
-              const y = p.t.getPointAtLength(ct.sdr*len).y; /*/ Shifting Distance y /*/
-              const dx = p.t.getPointAtLength(ct.sdr*(len + 1)).x;
-              const dy = p.t.getPointAtLength(ct.sdr*(len + 1)).y;
+            if (d > tr.tps.dis) {
+              const x = p.t.getPointAtLength(tr.sdr*len).x; /*/ Shifting Distance x /*/
+              const y = p.t.getPointAtLength(tr.sdr*len).y; /*/ Shifting Distance y /*/
+              const dx = p.t.getPointAtLength(tr.sdr*(len + 1)).x;
+              const dy = p.t.getPointAtLength(tr.sdr*(len + 1)).y;
               const dd = Math.sqrt(Math.pow(dx - pos.move.x*dpr/scale, 2) + Math.pow(dy - pos.move.y*dpr/scale, 2));
               if(d > dd) {
-                ct.tps.ss.push({ x: x, y: y });
+                tr.tps.ss.push({ x: x, y: y });
               }
             }
           } else {
 
-            ct.drag = {};
+            tr.drag = {};
           }
         }
         
         if (len) {
           cx.save();
-          const t = ct.p2s['l'+ ct.ss.cnt].t;
+          const t = tr.p2s['l'+ tr.ss.cnt].t;
           cx.clip(t.p);
          
           if(len > 1){ /*/ at least two /*/
             cx.setLineDash([]);
-            cx.lineWidth = ct.tps.thick;
+            cx.lineWidth = tr.tps.thick;
             cx.lineCap = 'round';
             cx.lineJoin = 'round';
             cx.strokeStyle = 'red';
             
             cx.beginPath();
-            ct.tps.ss.forEach((e, i) => {
+            tr.tps.ss.forEach((e, i) => {
               if (i) {
                 cx.lineTo(e.x, e.y);
               } else {
@@ -505,15 +507,15 @@
           }
           cx.restore();
 
-          if (Object.keys(ct.drag).length && Object.keys(pos.move).length && len === ct.tps.len) {
-            ct.p2s['l'+ ct.ss.cnt].t.s.fill = '#dae';
-            ct.ss.cnt = (ct.ss.cnt + 1)%(ct.ss.len + 1); /*/ count strokes - 1 ~ /*/
+          if (Object.keys(tr.drag).length && Object.keys(pos.move).length && len === tr.tps.len) {
+            tr.p2s['l'+ tr.ss.cnt].t.s.fill = '#dae';
+            tr.ss.cnt = (tr.ss.cnt + 1)%(tr.ss.len + 1); /*/ count strokes - 1 ~ /*/
             
-            if(!ct.ss.cnt){ /*/ each alphabets done /*/
+            if(!tr.ss.cnt){ /*/ each alphabets done /*/
               this.cnt = (this.cnt + 1)%this.len; /*/ count alphabet - 0 ~ /*/
 
-              ct.ss.cnt = 1;
-              //ct.ss.len = Object.keys(ct.tas[this.str[this.cnt]]).length;
+              tr.ss.cnt = 1;
+              //tr.ss.len = Object.keys(tr.tas[this.str[this.cnt]]).length;
               
               if (!this.cnt) { /*/ all alphabets done /*/
                 this.str.forEach(e => { /*/ 'A', 'B', ... /*/
@@ -523,12 +525,12 @@
               }
             }
 
-            ct.drag = {};
-            ct.tps.ss = [];
+            tr.drag = {};
+            tr.tps.ss = [];
           }
         }
         
-        if(Object.keys(pos.end).length){ ct.drag = {}; }
+        if(Object.keys(pos.end).length){ tr.drag = {}; }
       }
       /*/ play > trace < /*/
 
