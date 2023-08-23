@@ -237,22 +237,84 @@
 
       /*/ Modules Function Structure > Play > Flip Book > /*/
       Play.prototype.fb = { 
+        pos: [{ x: 0, y: 0 }, { x: 0, y: 0 }],
+        g: 0.8,
         on: false, /*/ true, false /*/
         off: 0, /*/ -1, 0 ,1 /*/
         page: 0,
         len: 0, /*/ Must be even - 0,1 2,3 4,5 6,7 8,9 10,11 ... 26, 26 page, 13 sheet /*/
-        skip: [],
-        // color: [],
-        // img: [],
         xy: { x: 0, y: 0 },
-        wh: { w: 384, h: 512 },
-        pivot: {}, //{ x: cvs.wh.w * 0.5, y: (cvs.wh.h - fb.wh.h) * 0.5 + fb.wh.h, pow: 0},
-        mark: [],
-        // ps: [] /*/ array PageS /*/
+        wh: { w: 0, h: 0 },
+        pivot: {}, //{ x: cvs.wh.w * 0.5, y: (cvs.wh.h - fb.wh.h) * 0.5 + fb.wh.h, pow: 0},         
+        skip: [],
+        mark: []
       };
 
       Play.prototype.fb.set = function(v) {
         const { ps, cx, pos } = v; 
+
+        /*/ Play > Flip Book > pos /*/
+        const setmousedown = v => {
+          const { xy } = v;
+          
+          if (!Object.keys(xy).length) return;
+          
+          const getpow = (dx, dy) => { return dx*dx + dy*dy; };
+          if (this.pivot.pow < getpow(this.pivot.x - xy.x, this.pivot.y - xy.y)) return;
+          if (this.page === this.len - 1 && this.pivot.x < xy.x) return; /// Last Right none pape
+          console.log(this.pivot.x, xy.x);
+          if (this.page === 0 && this.pivot.x > xy.x) return; /// First left none page
+
+          this.on = true;
+          this.pos[0].x = this.pos[1].x = xy.x;
+          this.pos[0].y = this.pos[1].y = xy.y;
+        
+          if (this.pivot.x < xy.x) { this.page = this.page ? this.page + 1 : this.page; }
+          this.off = ps[this.page].xy[0].x === this.pivot.x ? 1 : -1;
+          
+        };  
+        setmousedown({ xy: pos.start });
+
+        const setmouseup = v => {
+          const { xy } = v;
+          
+          if (!Object.keys(xy).length) return;
+
+          this.on = true; /// Auto position
+          if (this.page%2 && this.pos[0].x > this.pos[1].x || !(this.page%2) && this.pos[0].x < this.pos[1].x) { /// Cancel flip
+            this.pos[0].x = 0;
+            this.pos[0].y = 0;
+            
+          } else { /// Continue flip - Current mouse position
+            this.pos[1].x = this.pivot.x + ps[this.page].wh[0].w*this.off - this.pos[1].x;
+            this.pos[1].y = xy.y > this.pivot.y ? this.pivot.y - 0.1 : xy.y;
+            this.pos[1].y = this.pivot.y - this.pos[1].y;
+          }
+          this.on = false; /// Tracking mouse position
+        
+          console.log(this.page, ' : current left page');
+        };
+        setmouseup({ xy: pos.end });
+
+        const setmousemove = v => {
+          const { xy } = v;
+
+          if (!this.on) return;
+
+          if (this.pivot.pow > getpow(this.pivot.x - xy.x, fb.pivot.y - xy.y)) {
+            if(this.page%2 && xy.x > this.pivot.x || !(this.page%2) && xy.x < this.pivot.x || xy.y > this.pivot.y){
+              setmouseup({ xy: pos.move });
+              
+            }else{
+              this.pos[1].x = xy.x;
+              this.pos[1].y = xy.y;
+            }
+            
+          } else {
+            setmouseup({ xy: pos.move });
+          }
+        };
+        setmousemove({ xy: pos.move });
 
         /*/ Play > Flip Book > Sheet /*/
         const setfill = c => (cx.fillStyle = `rgba(${c}, ${c}, ${c}, 0.4)`);
@@ -327,7 +389,6 @@
             cx.restore();
           }
         };
-        setsheet({ n: this.page });
 
         /*/ Play > Flip Book > POSition of mouse /*/
         const setpos = v => {
@@ -339,9 +400,9 @@
           if (this.on) {
             const xy = { x: 0, y: 0 };
 
-            if (this.off > 0) { xy.x = pos.xy[1].x > e.xy[0].x + e.wh[0].w ? e.wh[0].w - 0.1 : pos.xy[1].x - e.xy[0].x; } 
-            else { xy.x = pos.xy[1].x > e.xy[0].x ? pos.xy[1].x - e.xy[0].x : 0.1; }
-            xy.y = pos.xy[1].y > e.xy[0].y + e.wh[0].h ? e.wh[0].h - 0.1 : pos.xy[1].y - e.xy[0].y;
+            if (this.off > 0) { xy.x = this.pos[1].x > e.xy[0].x + e.wh[0].w ? e.wh[0].w - 0.1 : this.pos[1].x - e.xy[0].x; } 
+            else { xy.x = this.pos[1].x > e.xy[0].x ? this.pos[1].x - e.xy[0].x : 0.1; }
+            xy.y = this.pos[1].y > e.xy[0].y + e.wh[0].h ? e.wh[0].h - 0.1 : this.pos[1].y - e.xy[0].y;
 
             e.xy[1].x = e.wh[0].w*((n + 1)%2) - xy.x*this.off;
             e.xy[1].y = e.wh[0].h - xy.y;
@@ -350,18 +411,18 @@
           } else {
             if (Math.abs(this.off)) { /// Continue Flip
               console.log(pos);
-              if (pos.xy[0].x * pos.xy[0].y) {
-                pos.xy[1].x = pos.xy[1].x*pos.g;
-                pos.xy[1].y = pos.xy[1].y*pos.g;
+              if (this.pos[0].x * this.pos[0].y) {
+                this.pos[1].x = this.pos[1].x*this.g;
+                this.pos[1].y = this.pos[1].y*this.g;
 
                 const xy = { x: 0, y: 0 };
-                xy.x = (this.pivot.x - e.wh[0].w*this.off + pos.xy[1].x) - e.xy[0].x;
-                xy.y = (this.pivot.y - pos.xy[1].y) - e.xy[0].y;
+                xy.x = (this.pivot.x - e.wh[0].w*this.off + this.pos[1].x) - e.xy[0].x;
+                xy.y = (this.pivot.y - this.pos[1].y) - e.xy[0].y;
 
                 e.xy[1].x = e.wh[0].w*((n + 1)%2) - xy.x*this.off;
                 e.xy[1].y = e.wh[0].h - xy.y;
 
-                if (Math.abs(pos.xy[1].x) < 1 && pos.xy[1].y < 1) {
+                if (Math.abs(this.pos[1].x) < 1 && this.pos[1].y < 1) {
                   const osp = this.page; /// Other Side Page
                   this.page = (this.page + this.off)%ps.length;
 
@@ -377,25 +438,25 @@
                   e.xy[1].x = 0;
                   e.xy[1].y = 0;
                   this.off = 0;
-                  pos.on = false;
+                  this.on = false;
                 }
 
               } else { /// Cancel Flip
-                e.xy[1].x = e.xy[1].x*pos.g + 1;
-                e.xy[1].y = e.xy[1].y*pos.g + 1;
+                e.xy[1].x = e.xy[1].x*this.g + 1;
+                e.xy[1].y = e.xy[1].y*this.g + 1;
 
-                if (e.xy[1].x < pos.g*10 + 1 && e.xy[1].y < pos.g*10 + 1) {
+                if (e.xy[1].x < this.g*10 + 1 && e.xy[1].y < this.g*10 + 1) {
                   this.page = this.page%2 ? this.page : this.page ? this.page - 1 : this.page; /// Default odd pages, First page zero
 
                   e.xy[1].x = 0;
                   e.xy[1].y = 0;
                   this.off = 0;
-                  pos.on = false;
+                  this.on = false;
                 }
               }
             }
           }
-          console.log(pos.on);
+          console.log(this.on);
           setsheet({ n: this.page });
         };
         setpos({ e: ps[this.page], n: this.page });
