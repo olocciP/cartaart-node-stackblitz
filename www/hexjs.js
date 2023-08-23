@@ -235,7 +235,7 @@
       }
       /*/ Modules Function Structure > Play > Draw < /*/
 
-      /*/ Play > Flip Book > /*/
+      /*/ Modules Function Structure > Play > Flip Book > /*/
       Play.prototype.fb = { 
         on: false, /*/ true, false /*/
         off: 0, /*/ -1, 0 ,1 /*/
@@ -252,19 +252,20 @@
       };
 
       Play.prototype.fb.set = function(v) {
-        const { ps, cx, pos } = v;
+        const { ps, cx, pos } = v; 
 
         /*/ Play > Flip Book > Sheet /*/
-        const setfill = c => (ctx.fillStyle = `rgba(${c}, ${c}, ${c}, 0.4)`);
-        const setrect = (xy, wh) => ctx.fillRect(xy.x, xy.y, wh.w, wh.h);
+        const setfill = c => (cx.fillStyle = `rgba(${c}, ${c}, ${c}, 0.4)`);
+        const setrect = (xy, wh) => cx.fillRect(xy.x, xy.y, wh.w, wh.h);
 
         const setdraw = v => {
           const { c, t, xy, wh } = v;
-          console.log(c);
-          ctx.fillStyle = `#${c}`;
+
+          cx.fillStyle = `${c}`; /*/ hsl /*/
           setrect(xy, wh);
           setfill(0);
-          ctx.fillText(t, str.xy.x + xy.x, str.xy.y + xy.y);
+          // cx.fillText(t, str.xy.x + xy.x, str.xy.y + xy.y);
+          cx.fillText(t, xy.x, xy.y);
         };
 
         const setsheet = v => {
@@ -272,7 +273,8 @@
 
           cx.save();
           /*/ Left page : '' & Right page : 'C' /*/
-          const l = ps.length;
+          // const l = ps.length;
+          const l = this.count;
           const sp = {}; /// Static Page
           if (Math.abs(this.off)) {
             sp.l = this.off > 0 ? ps[(l + n - 1) % l] : ps[(l + n - 2) % l];
@@ -281,7 +283,7 @@
             sp.l = ps[(l + n + 1) % l];
             sp.r = ps[(l + n) % l];
           }
-          console.log(n);
+          // console.log(n);
           setdraw({ c: sp.l.c[0], t: sp.l.str[0], xy: sp.l.xy[0], wh: sp.l.wh[0] });
           if((Math.abs(this.off) && n === l - 2) || (Math.abs(this.off) && n === l - 1)) { /* Doesn't draw 0 page at mouse move - A */ } 
           else { setdraw({ c: sp.r.c[0], t: sp.r.str[0], xy: sp.r.xy[0], wh: sp.r.wh[0] }); }
@@ -324,6 +326,7 @@
             cx.restore();
           }
         };
+        setsheet({ n: this.page });
 
         /*/ Play > Flip Book > POSition of mouse /*/
         const setpos = v => {
@@ -393,11 +396,10 @@
           console.log(pos.on);
           setsheet({ n: this.page });
         };
-
         setpos({ e: ps[this.page], n: this.page });
         // console.log(this);
       };
-      /*/ Play > Flip Book < /*/
+      /*/ Modules Function Structure > Play > Flip Book < /*/
 
       /*/ play > TRACE > /*/
       Play.prototype.trace = { str: [], len: 0, cnt: 0 }; /*/ Alphabet STRing: ['a', 'l', 'p', ...], LENgth, CouNT /*/

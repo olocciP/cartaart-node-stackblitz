@@ -294,18 +294,24 @@ const setload = v => {
 
     Object.keys(casts).forEach(e => {
       hPlay.setmove({xy: casts[e].xy, hv: casts[e].hv, by: casts[e].by, path: hPlay.paths[e], p: casts[e].p});
-      let n = casts[e].by.n;
+      const n = casts[e].by.n;
       hPlay.setdraw({img: casts[e].img[n], xy: casts[e].xy[1], wh: casts[e].wh[1], hv: casts[e].hv[1]});
     });
 
     Object.keys(hPack.evts /*/ EVenTS /*/).forEach(e => hPlay['put'+hPack.evts[e].type](hPack.evts[e]));
     Object.keys(hPack.efts /*/ EFfecTS /*/).forEach(e => hPlay['set'+hPack.efts[e].type](hPack.efts[e]));
     
-    Object.keys(hPart.fbps /*/ Flip Book PageS /*/).forEach(e => {
-      hPlay.fb.set({ ps: hPart.fbps, cx: cx, pos: hPlay.pos });
-    });
+    // hPart.fbps.forEach((e, i) => {  /*/ Flip Book PageS - array /*/
+    //   hPlay.fb.set({ ps: hPart.fbps, cx: cx, pos: hPlay.pos });
+    // });
+    // const ps = [-2, -1, 0, 1, 2, 3];
+    // ps.forEach(e => {  /*/ Flip Book PageS - array /*/
+    //   // hPlay.fb.set({ ps: hPart.fbps, cx: cx, pos: hPlay.pos, n: (hPlay.fb.count + e)%hPlay.fb.count });
 
-    Object.keys(hPart.traces).forEach(e => {
+    // });
+    hPlay.fb.set({ ps: hPart.fbps, cx: cx, pos: hPlay.pos });
+
+    Object.keys(hPart.traces /*/ Tracing Alphabet /*/).forEach(e => {
       hPlay.trace.set({ ct: hPart.traces[e], cx: cx, pos: hPlay.pos, scale: hPage.scale, dpr: hPlan.wds.dpr });
     });
 
