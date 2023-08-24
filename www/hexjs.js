@@ -109,9 +109,9 @@
       Play.prototype.setpos = function (v) {
         const { e, type, touch, bcr } = v;
 
-        if(type === 'end'){
-          this.pos[type].x = parseInt(this.pos.move.x - bcr.left);
-          this.pos[type].y = parseInt(this.pos.move.y - bcr.top);
+        if(type === 'end'){ /*/ Position value does not come in touch end event /*/
+          this.pos[type].x = this.pos.move.x;
+          this.pos[type].y = this.pos.move.y;
 
         }else{
           const xy = { x: touch ? e.touches[0].clientX : e.clientX, y: touch ? e.touches[0].clientY : e.clientY };
@@ -127,51 +127,39 @@
 
         const k = key.replace(/\./g, '');
         if (!parseInt(hPack[g][k].opt.ot * 10)) return;
+        
+        /*/ Play > Button > Navigation > /*/
+        if (typeof target === 'string') {
+          const domain = behave.match(/(?<=\.\/)(.*)(?=\/)/g).join('');
+          if (hPlot.domain === domain) return;
+          
+          const p = hPack[g][k].bvr; /*/ Button Virtual Rect - path2D /*/
+          p.rect(path.x, path.y, path.w, path.h);
+          
+          if (!Object.keys(this.pos.start).length) {
+            const x = this.pos.move.x;
+            const y = this.pos.move.y;
+            if (isNaN(x) || isNaN(y)) return;
 
-        if (!Object.keys(this.pos.start).length) {
-          const x = this.pos.move.x;
-          const y = this.pos.move.y;
-          if (isNaN(x) || isNaN(y)) return;
-
-          if (typeof target === 'string') {
-            const domain = behave.match(/(?<=\.\/)(.*)(?=\/)/g).join('');
-            if (hPlot.domain === domain) return;
-
-            const p = hPack[g][k].bvr; /*/ Button Virtual Rect /*/
-            p.rect(path.x, path.y, path.w, path.h);
             if (hPage.cx.isPointInPath(p, x*dpr, y*dpr)) {
               hPack[g][k].opt.or = true;
             } else {
               hPack[g][k].opt.or = false;
-            };
-          } else {
-            // if(Array.isArray([1, 2])){
-            // }else{
-
+            }
           }
-        }
-
-        if (Object.keys(this.pos.end).length) {
-          if (typeof target === 'string') {
-            const domain = behave.match(/(?<=\.\/)(.*)(?=\/)/g).join('');
-            if (hPlot.domain === domain) return;
-
+          
+          if (Object.keys(this.pos.end).length) {
             const x = this.pos.end.x;
             const y = this.pos.end.y;
             if (isNaN(x) || isNaN(y)) return;
-
-            const p = hPack[g][k].bvr; /*/ Button Virtual Rect /*/
-            p.rect(path.x, path.y, path.w, path.h);
+            
             if (hPage.cx.isPointInPath(p, x*dpr, y*dpr)) {
               hPlan.behave = behave;
               hPlan.status = false;
-            };
-          } else {
-            // if(Array.isArray([1, 2])){
-            // }else{
-
+            }
           }
-        };
+        }
+        /*/ Play > Button > Navigation < /*/
       };
       /*/ Modules Function Structure > Play > Button < /*/
 
