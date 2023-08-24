@@ -106,25 +106,28 @@ const setload = v => {
 
     for (let key in stuff.flipbook[e]) { v[key] = stuff.flipbook[e][key]; }
 
-    hPlay.fb.pos = [{ x: 0, y: 0 }, { x: 0, y: 0 }];
-    hPlay.fb.g = 0.8;
-    hPlay.fb.on = v.on = false; /*/ true, false /*/
-    hPlay.fb.off = v.off = 0; /*/ -1, 0 ,1 /*/
-    hPlay.fb.page = v.page = 0;
+    hPlay.fb.on = false; /*/ true, false /*/
+    hPlay.fb.off = 0; /*/ -1, 0 ,1 /*/
+    hPlay.fb.page = 0;
     if(!v.objs.length%2 /*/ Must be even /*/){ v.objs.push(''); }
-    hPlay.fb.len = v.count = v.objs.length;
-    hPlay.fb.xy = { x: 0, y: 0 };
-    hPlay.fb.wh = { w: 384, h: 512 };
+    hPlay.fb.len = v.objs.length;
+    hPlay.fb.gf = 0.8; /*/ Gravitational Force /*/
+
+    hPlay.fb.xy = v.xy;
+    hPlay.fb.wh = v.wh;
+    hPlay.fb.hv = v.hv;
     const xy = { x: cs.w*0.5, y: (cs.h - v.wh[1].h)*0.5 + v.wh[1].h };
-    hPlay.fb.pivot = v.pivot = { x: xy.x, y: xy.y, pow: xy.x*xy.x + xy.y*xy.y };
-    hPlay.fb.skip = v.skip = [1, 5, 15, 25, 35, 55, 85, 135];
+    hPlay.fb.pivot = { x: xy.x, y: xy.y, pow: xy.x*xy.x + xy.y*xy.y };
+
+    hPlay.fb.cc = v.cc;
+    hPlay.fb.skip = [1, 5, 15, 25, 35, 55, 85, 135];
     hPlay.fb.mark = [];
 
     v.objs.forEach((e, i) => {
-      e = e.length ? e : String.fromCharCode(65 + i); /*/ Index Image String /*/
+      e = e.length ? e : String.fromCharCode(v.cc.code + i); /*/ Index Image String /*/
       // const c = `#${Math.floor(Math.random()*16777215).toString(16)}`;
       const c = `hsl(${360*Math.random()}, 100%, 80%)`; /*/ Pastel /*/
-      hPart.fbps.unshift(new hPart.fbp({ x: v.pivot.x, y: v.pivot.y - v.wh[1].h, w: v.wh[1].w, h: v.wh[1].h, c: c, str: e }));
+      hPart.fbps.unshift(new hPart.fbp({ x: xy.x, y: xy.y - v.wh[1].h, w: v.wh[1].w, h: v.wh[1].h, c: c, str: e }));
     });
   });
 

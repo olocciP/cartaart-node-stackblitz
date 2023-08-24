@@ -253,16 +253,17 @@
       /*/ Modules Function Structure > Play > Draw < /*/
 
       /*/ Modules Function Structure > Play > Flip Book > /*/
-      Play.prototype.fb = { 
-        pos: [{ x: 0, y: 0 }, { x: 0, y: 0 }],
-        g: 0.8,
+      Play.prototype.fb = {
         on: false, /*/ true, false /*/
         off: 0, /*/ -1, 0 ,1 /*/
         page: 0,
-        len: 0, /*/ Must be even - 0,1 2,3 4,5 6,7 8,9 10,11 ... 26, 26 page, 13 sheet /*/
-        xy: { x: 0, y: 0 },
-        wh: { w: 0, h: 0 },
-        pivot: {}, //{ x: cvs.wh.w * 0.5, y: (cvs.wh.h - fb.wh.h) * 0.5 + fb.wh.h, pow: 0},         
+        len: 0,
+        gf: 0.8, /*/ Gravitational Force /*/
+        xy: [],
+        wh: [],
+        hv: [],
+        pivot: {},
+        cc: {},
         skip: [],
         mark: []
       };
@@ -282,8 +283,8 @@
           if (this.page === 0 && this.pivot.x*r > xy.x) return; /// First left none page
 
           this.on = true;
-          this.pos[0].x = this.pos[1].x = xy.x;
-          this.pos[0].y = this.pos[1].y = xy.y;
+          this.xy[0].x = this.xy[1].x = xy.x;
+          this.xy[0].y = this.xy[1].y = xy.y;
         
           if (this.pivot.x*r < xy.x) { this.page = this.page ? this.page + 1 : this.page; }
           this.off = ps[this.page].xy[0].x === this.pivot.x*r ? 1 : -1;
@@ -297,19 +298,20 @@
           if (!Object.keys(xy).length) return;
 
           this.on = true; /// Auto position
-          if (this.page%2 && this.pos[0].x > this.pos[1].x || !(this.page%2) && this.pos[0].x < this.pos[1].x) { /// Cancel flip
-            this.pos[0].x = 0;
-            this.pos[0].y = 0;
+          if (this.page%2 && this.xy[0].x > this.xy[1].x || !(this.page%2) && this.xy[0].x < this.xy[1].x) { /// Cancel flip
+            this.xy[0].x = 0;
+            this.xy[0].y = 0;
             
           } else { /// Continue flip - Current mouse position
-            this.pos[1].x = this.pivot.x*r + ps[this.page].wh[0].w*this.off - this.pos[1].x;
-            this.pos[1].y = xy.y > this.pivot.y*r ? this.pivot.y*r - 0.1 : xy.y;
-            this.pos[1].y = this.pivot.y*r - this.pos[1].y;
+            this.xy[1].x = this.pivot.x*r + ps[this.page].wh[0].w*this.off - this.xy[1].x;
+            this.xy[1].y = xy.y > this.pivot.y*r ? this.pivot.y*r - 0.1 : xy.y;
+            this.xy[1].y = this.pivot.y*r - this.xy[1].y;
           }
           this.on = false; /// Tracking mouse position
         
           console.log(this.page, ' : current left page');
         };
+
         setmouseup({ xy: pos.end });
 
         const setmousemove = v => {
@@ -322,8 +324,8 @@
               setmouseup({ xy: pos.move });
               
             }else{
-              this.pos[1].x = xy.x;
-              this.pos[1].y = xy.y;
+              this.xy[1].x = xy.x;
+              this.xy[1].y = xy.y;
             }
             
           } else {
@@ -332,18 +334,87 @@
         };
         setmousemove({ xy: pos.move });
 
-        /*/ Play > Flip Book > Sheet /*/
-        const setfill = c => (cx.fillStyle = `rgba(${c}, ${c}, ${c}, 0.4)`);
-        const setrect = (xy, wh) => cx.fillRect(xy.x, xy.y, wh.w, wh.h);
+        /*/ Play > Flip Book > POSition of mouse /*/
+        const setfbp = v => {
+          const { e, n } = v;
 
+          if (!this.off) return;
+
+          /*/ Tracking mouse position and flipping /*/
+          if (this.on) {
+            const xy = { x: 0, y: 0 };
+
+            if (this.off > 0) { xy.x = this.xy[1].x > e.xy[0].x + e.wh[0].w ? e.wh[0].w - 0.1 : this.xy[1].x - e.xy[0].x; } 
+            else { xy.x = this.xy[1].x > e.xy[0].x ? this.xy[1].x - e.xy[0].x : 0.1; }
+            xy.y = this.xy[1].y > e.xy[0].y + e.wh[0].h ? e.wh[0].h - 0.1 : this.xy[1].y - e.xy[0].y;
+
+            e.xy[1].x = e.wh[0].w*((n + 1)%2) - xy.x*this.off;
+            e.xy[1].y = e.wh[0].h - xy.y;
+
+          /*/ Continue Flip or Cancel Flip position /*/
+          } else {
+            if (Math.abs(this.off)) { /// Continue Flip
+              if (this.xy[0].x * this.xy[0].y) {
+                this.xy[1].x = this.xy[1].x*this.gf;
+                this.xy[1].y = this.xy[1].y*this.gf;
+
+                const xy = { x: 0, y: 0 };
+                xy.x = (this.pivot.x - e.wh[0].w*this.off + this.xy[1].x) - e.xy[0].x;
+                xy.y = (this.pivot.y - this.xy[1].y) - e.xy[0].y;
+
+                e.xy[1].x = e.wh[0].w*((n + 1)%2) - xy.x*this.off;
+                e.xy[1].y = e.wh[0].h - xy.y;
+
+                if (Math.abs(this.xy[1].x) < 1 && this.xy[1].y < 1) {
+                  const osp = this.page; /// Other Side Page
+                  this.page = (this.len + this.page + this.off)%this.len;
+
+                  const odd = this.page%2; /// Odd : 1, Even : 0
+                  ps[osp].xy[0].x = this.pivot.x - ps[osp].wh[0].w*odd;
+                  ps[this.page].xy[0].x = this.pivot.x - ps[this.page].wh[0].w*odd;
+
+                  ps[this.page].xy[1].x = 0;
+                  ps[this.page].xy[1].y = 0;
+
+                  this.page = odd ? this.page : this.page ? this.page - 1 : this.page; /// Default odd pages, First page zero
+
+                  e.xy[1].x = 0;
+                  e.xy[1].y = 0;
+                  this.off = 0;
+                  this.on = false;
+                }
+
+              } else { /// Cancel Flip
+                e.xy[1].x = e.xy[1].x*this.gf + 1;
+                e.xy[1].y = e.xy[1].y*this.gf + 1;
+
+                if (e.xy[1].x < this.gf*10 + 1 && e.xy[1].y < this.gf*10 + 1) {
+                  this.page = this.page%2 ? this.page : this.page ? this.page - 1 : this.page; /// Default odd pages, First page zero
+
+                  e.xy[1].x = 0;
+                  e.xy[1].y = 0;
+                  this.off = 0;
+                  this.on = false;
+                }
+              }
+            }
+          }
+        };
+        setfbp({ e: ps[this.page], n: this.page });
+
+        /*/ Play > Flip Book > Sheet /*/
         const setdraw = v => {
           const { c, t, xy, wh } = v;
-
           cx.fillStyle = `${c}`; /*/ hsl /*/
-          setrect(xy, wh);
-          setfill(0);
-          // cx.fillText(t, str.xy.x + xy.x, str.xy.y + xy.y);
-          cx.fillText(t, xy.x, xy.y);
+          cx.fillRect(xy.x, xy.y, wh.w, wh.h);
+
+          this.cc.xy.x = wh.w*0.5;
+          this.cc.xy.y = wh.h*0.5 + this.cc.fs*0.25;
+
+          cx.font = this.cc.ff;
+          cx.fillStyle = this.cc.fc; /*/ rgba /*/
+          cx.textAlign = this.cc.align;
+          cx.fillText(t, this.cc.xy.x + xy.x, this.cc.xy.y + xy.y);
         };
 
         const setsheet = v => {
@@ -406,75 +477,7 @@
             cx.restore();
           }
         };
-
-        /*/ Play > Flip Book > POSition of mouse /*/
-        const setfbp = v => {
-          const { e, n } = v;
-
-          if (!this.off) return;
-
-          /*/ Tracking mouse position and flipping /*/
-          if (this.on) {
-            const xy = { x: 0, y: 0 };
-
-            if (this.off > 0) { xy.x = this.pos[1].x > e.xy[0].x + e.wh[0].w ? e.wh[0].w - 0.1 : this.pos[1].x - e.xy[0].x; } 
-            else { xy.x = this.pos[1].x > e.xy[0].x ? this.pos[1].x - e.xy[0].x : 0.1; }
-            xy.y = this.pos[1].y > e.xy[0].y + e.wh[0].h ? e.wh[0].h - 0.1 : this.pos[1].y - e.xy[0].y;
-
-            e.xy[1].x = e.wh[0].w*((n + 1)%2) - xy.x*this.off;
-            e.xy[1].y = e.wh[0].h - xy.y;
-
-          /*/ Continue Flip or Cancel Flip position /*/
-          } else {
-            if (Math.abs(this.off)) { /// Continue Flip
-              if (this.pos[0].x * this.pos[0].y) {
-                this.pos[1].x = this.pos[1].x*this.g;
-                this.pos[1].y = this.pos[1].y*this.g;
-
-                const xy = { x: 0, y: 0 };
-                xy.x = (this.pivot.x - e.wh[0].w*this.off + this.pos[1].x) - e.xy[0].x;
-                xy.y = (this.pivot.y - this.pos[1].y) - e.xy[0].y;
-
-                e.xy[1].x = e.wh[0].w*((n + 1)%2) - xy.x*this.off;
-                e.xy[1].y = e.wh[0].h - xy.y;
-
-                if (Math.abs(this.pos[1].x) < 1 && this.pos[1].y < 1) {
-                  const osp = this.page; /// Other Side Page
-                  this.page = (this.len + this.page + this.off)%this.len;
-
-                  const odd = this.page%2; /// Odd : 1, Even : 0
-                  ps[osp].xy[0].x = this.pivot.x - ps[osp].wh[0].w*odd;
-                  ps[this.page].xy[0].x = this.pivot.x - ps[this.page].wh[0].w*odd;
-
-                  ps[this.page].xy[1].x = 0;
-                  ps[this.page].xy[1].y = 0;
-
-                  this.page = odd ? this.page : this.page ? this.page - 1 : this.page; /// Default odd pages, First page zero
-
-                  e.xy[1].x = 0;
-                  e.xy[1].y = 0;
-                  this.off = 0;
-                  this.on = false;
-                }
-
-              } else { /// Cancel Flip
-                e.xy[1].x = e.xy[1].x*this.g + 1;
-                e.xy[1].y = e.xy[1].y*this.g + 1;
-
-                if (e.xy[1].x < this.g*10 + 1 && e.xy[1].y < this.g*10 + 1) {
-                  this.page = this.page%2 ? this.page : this.page ? this.page - 1 : this.page; /// Default odd pages, First page zero
-
-                  e.xy[1].x = 0;
-                  e.xy[1].y = 0;
-                  this.off = 0;
-                  this.on = false;
-                }
-              }
-            }
-          }
-          setsheet({ n: this.page });
-        };
-        setfbp({ e: ps[this.page], n: this.page });
+        setsheet({ n: this.page });
       };
       /*/ Modules Function Structure > Play > Flip Book < /*/
 
