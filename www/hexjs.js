@@ -110,13 +110,18 @@
         const { e, type, touch, bcr } = v;
 
         if(type === 'end'){ /*/ Position value does not come in touch end event /*/
-          this.pos[type].x = this.pos.move.x;
-          this.pos[type].y = this.pos.move.y;
+          this.pos[type].x = this.pos.move.x ;
+          this.pos[type].y = this.pos.move.y ;
 
         }else{
           const xy = { x: touch ? e.touches[0].clientX : e.clientX, y: touch ? e.touches[0].clientY : e.clientY };
           this.pos[type].x = parseInt(xy.x - bcr.left);
           this.pos[type].y = parseInt(xy.y - bcr.top);
+
+          if(type === 'start') { 
+            this.pos.move.x = this.pos[type].x;
+            this.pos.move.y = this.pos[type].y;  
+          }
         }
       };
       /*/ Modules Function Structure > Play > Mouse or Touch Pos < /*/

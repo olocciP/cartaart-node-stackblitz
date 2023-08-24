@@ -276,7 +276,7 @@ const setload = v => {
     const {} = v;
 
     hPlay.setclear({ cs: /*/ hPlot.cs /*/ cs, pg: hPage, dpr: hPlan.wds.dpr });
-    
+    const xy = hPlay.pos;
     Object.keys(hPack.gradients).forEach(e => { hPack.gradients[e].fn(hPack.gradients[e]); });
     Object.keys(faces).forEach(e => {
       cx.drawImage(faces[e].img, faces[e].xy[1].x, faces[e].xy[1].y, faces[e].wh[1].w, faces[e].wh[1].h);
