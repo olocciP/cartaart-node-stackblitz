@@ -68,21 +68,39 @@
       Play.prototype.pos = { start: {}, move: {}, end: {} };
 
       Play.prototype.init = function(v){
-        const { width, height, cx, touch } = v;
+        const { width, height, cs, cx, touch } = v;
 
         this.width = width;
         this.height = height;
-        this.cx = cx;
+        this.cs = cs; /*/ hPage.cs - CanvaS element /*/
+        this.cx = cx; /*/ hPage.cx - ConteXt element /*/
+
 
         this.touch.start = touch ? 'touchstart' : 'mousedown';
         this.touch.move = touch ? 'touchmove' : 'mousemove';
         this.touch.end = touch ? 'touchend' : 'mouseup';
 
         this.setclear = function (v) {
-          const { c } = v;
+          const { cs /*/ hPlot.cs - CanvaS Data /*/, pg /*/ hPage /*/, dpr /*/ hPlan.wds.dpr /*/ } = v;
           
-          cx.clearRect(0, 0, width, height);
-          cx.fillStyle = c || '#fff';
+          /// this.cs.style.left = `${pg.x*0.5}px`;
+          /// this.cs.style.top = `${pg.y*0.5}px`;
+
+          /// this.cs.style.width = `${pg.width*pg.r}px`;
+          /// this.cs.style.height = `${pg.height*pg.r}px`;
+
+          /// this.cs.width = pg.width*dpr*pg.r;
+          /// this.cs.height = pg.height*dpr*pg.r;
+
+          this.cx.scale(1, 1);
+
+          /// this.cx.shadowColor = cs.s.c;
+          /// this.cx.shadowBlur = cs.s.b; /*/ Avoid the shadowBlur property whenever possible /*/
+          /// this.cx.shadowOffsetX = cs.s.xy.x;
+          /// this.cx.shadowOffsetY = cs.s.xy.y;
+
+          this.cx.clearRect(0, 0, pg.width, pg.height);
+          this.cx.fillStyle = cs.c || '#fff';
           // cx.fillRect(0, 0, width, height);
         };
       }
@@ -90,10 +108,16 @@
       /*/ Modules Function Structure > Play > Mouse or Touch Pos > /*/
       Play.prototype.setpos = function (v) {
         const { e, type, touch, bcr } = v;
-       
-        const xy = { x: touch ? e.touches[0].clientX : e.clientX, y: touch ? e.touches[0].clientY : e.clientY };
-        this.pos[type].x = xy.x - bcr.left;
-        this.pos[type].y = xy.y - bcr.top;
+
+        if(type === 'end'){
+          this.pos[type].x = this.pos.move.x - bcr.left;
+          this.pos[type].y = this.pos.move.y - bcr.top;
+
+        }else{
+          const xy = { x: touch ? e.touches[0].clientX : e.clientX, y: touch ? e.touches[0].clientY : e.clientY };
+          this.pos[type].x = xy.x - bcr.left;
+          this.pos[type].y = xy.y - bcr.top;
+        }
       };
       /*/ Modules Function Structure > Play > Mouse or Touch Pos < /*/
 
@@ -620,7 +644,7 @@
         document.body.appendChild(this.cs);
 
         this.set = v => {
-          const { dpr } = v;
+          const { dpr, s } = v;
 
           const style = document.body.style;
           style.width = '100%';
@@ -632,15 +656,15 @@
           style.overflow = 'hidden';
 
           this.cs.style.position = 'absolute';
-          // this.setsize({ dpr: dpr });
+          this.setsize({ dpr: dpr, s: s });
         };
 
         this.setsize = v => {
-          const { dpr, shadow } = v;
+          const { dpr, s } = v;
 
           this.w = window.innerWidth/this.width;
           this.h = window.innerHeight/this.height;
-          this.r = this.w > this.h ? this.w : this.h;
+          this.r = this.w < this.h ? this.w : this.h;
           this.x = window.innerWidth - this.width*this.r;
           this.y = window.innerHeight - this.height*this.r;
 
@@ -653,14 +677,14 @@
           this.cs.width = this.width*dpr*this.r;
           this.cs.height = this.height*dpr*this.r;
 
-          this.scale = dpr*this.r;
-          this.cx.scale(dpr*this.r, dpr*this.r);
+          this.scale = dpr*this.r; /*/ Needed to adjust mouse position /*/
+          this.cx.scale(this.scale, this.scale);
           this.bcr = this.cs.getBoundingClientRect();
 
-          this.cx.shadowColor = shadow.c;
-          this.cx.shadowBlur = shadow.b; /*/ Avoid the shadowBlur property whenever possible /*/
-          this.cx.shadowOffsetX = shadow.xy.x;
-          this.cx.shadowOffsetY = shadow.xy.y;
+          this.cx.shadowColor = s.c;
+          this.cx.shadowBlur = s.b; /*/ Avoid the shadowBlur property whenever possible /*/
+          this.cx.shadowOffsetX = s.xy.x;
+          this.cx.shadowOffsetY = s.xy.y;
 
           // this.cs.style.transformOrigin = '0 0'; //scale from top left
           // this.cs.style.transform = `scale(${this.scale})`;

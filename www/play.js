@@ -67,15 +67,15 @@ const setload = v => {
   /*/ Third Page /*/
   hPage = new HEX.Page();
   hPage.init({ name: 'hex', id: 'hex', type: '2d', width: cs.w, height: cs.h, color: cs.c, body: hPlot.c });
-  hPage.set({ dpr: hPlan.wds.dpr });
+  hPage.set({ dpr: hPlan.wds.dpr, s: cs.s });
   const cx = /*/ context /*/ hPage.cx;
 
   /*/ Fourth Play /*/
   hPlay = new HEX.Play();
   const touch = hPlan.wds.mob;
-  hPlay.init({ width: cs.w, height: cs.h, cx: cx, touch: touch });
+  hPlay.init({ width: cs.w, height: cs.h, cs: hPage.cs, cx: cx, touch: touch });
 
-  // window.addEventListener('resize', () => { hPage.setsize({ dpr: hPlan.wds.dpr, shadow: cs.s }) });
+  window.addEventListener('resize', () => { hPage.setsize({ dpr: hPlan.wds.dpr, s: cs.s }) });
   hPage.cs.addEventListener(hPlay.touch.start, e => hPlay.setpos({ e: e, type: 'start', touch: touch, bcr: hPage.bcr }), false);
   hPage.cs.addEventListener(hPlay.touch.move, e => hPlay.setpos({ e: e, type: 'move', touch: touch, bcr: hPage.bcr }), false);
   hPage.cs.addEventListener(hPlay.touch.end, e => hPlay.setpos({ e: e, type: 'end', touch: touch, bcr: hPage.bcr }), false);
@@ -275,8 +275,7 @@ const setload = v => {
   const setframe = v => {
     const {} = v;
 
-    hPage.setsize({ dpr: hPlan.wds.dpr, shadow: cs.s });
-    hPlay.setclear({ c: cs.c });
+    hPlay.setclear({ cs: /*/ hPlot.cs /*/ cs, pg: hPage, dpr: hPlan.wds.dpr });
     
     Object.keys(hPack.gradients).forEach(e => { hPack.gradients[e].fn(hPack.gradients[e]); });
     Object.keys(faces).forEach(e => {
