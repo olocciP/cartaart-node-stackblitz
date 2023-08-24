@@ -110,13 +110,13 @@
         const { e, type, touch, bcr } = v;
 
         if(type === 'end'){
-          this.pos[type].x = this.pos.move.x - bcr.left;
-          this.pos[type].y = this.pos.move.y - bcr.top;
+          this.pos[type].x = parseInt(this.pos.move.x - bcr.left);
+          this.pos[type].y = parseInt(this.pos.move.y - bcr.top);
 
         }else{
           const xy = { x: touch ? e.touches[0].clientX : e.clientX, y: touch ? e.touches[0].clientY : e.clientY };
-          this.pos[type].x = xy.x - bcr.left;
-          this.pos[type].y = xy.y - bcr.top;
+          this.pos[type].x = parseInt(xy.x - bcr.left);
+          this.pos[type].y = parseInt(xy.y - bcr.top);
         }
       };
       /*/ Modules Function Structure > Play > Mouse or Touch Pos < /*/
@@ -415,7 +415,7 @@
         };
 
         /*/ Play > Flip Book > POSition of mouse /*/
-        const setpos = v => {
+        const setfbp = v => {
           const { e, n } = v;
 
           if (!this.off) return;
@@ -481,7 +481,7 @@
           }
           setsheet({ n: this.page });
         };
-        setpos({ e: ps[this.page], n: this.page });
+        setfbp({ e: ps[this.page], n: this.page });
       };
       /*/ Modules Function Structure > Play > Flip Book < /*/
 
