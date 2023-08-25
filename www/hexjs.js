@@ -86,13 +86,13 @@
           /// this.cs.style.left = `${pg.x*0.5}px`;
           /// this.cs.style.top = `${pg.y*0.5}px`;
 
-          /// this.cs.style.width = `${pg.width*pg.r}px`;
-          /// this.cs.style.height = `${pg.height*pg.r}px`;
+          this.cs.style.width = `${pg.width*pg.r}px`;
+          this.cs.style.height = `${pg.height*pg.r}px`;
 
-          /// this.cs.width = pg.width*dpr*pg.r;
-          /// this.cs.height = pg.height*dpr*pg.r;
+          // this.cs.width = pg.width*dpr*pg.r;
+          // this.cs.height = pg.height*dpr*pg.r;
 
-          this.cx.scale(1, 1);
+          // this.cx.scale(1, 1);
 
           /// this.cx.shadowColor = cs.s.c;
           /// this.cx.shadowBlur = cs.s.b; /*/ Avoid the shadowBlur property whenever possible /*/
