@@ -920,11 +920,12 @@
       const Plot = function () {};
 
       Plot.prototype.init = function (v) { 
-        let { xml } = v;
+        const { xml } = v;
 
         // xml = xml.replace(/^"+|"+$/g, ''); /// TEXT: quotation marks before and after sentences, Remove quotation marks
-        xml = xml.replace(/<!--(.*?)-->/g, ''); /// COMMENT: Remove domments
-        this.xml = xml.replace(/\s{2,}/g, ''); /// SPACE: Remove two or more spaces
+        this.xml = xml
+        /*/ COMMENT: Remove domments /*/.replace(/<!--(.*?)-->/g, '')
+        /*/ SPACE: Remove two or more spaces /*/.replace(/\s{2,}/g, '');
         const doc = new DOMParser().parseFromString(this.xml, 'text/xml');
         this.domain = doc.querySelector('pack').getAttribute('domain');
 
