@@ -83,21 +83,19 @@
         this.setclear = function (v) {
           const { cs /*/ hPlot.cs - CanvaS Data /*/, pg /*/ hPage /*/, dpr /*/ hPlan.wds.dpr /*/ } = v;
           
-          /// this.cs.style.left = `${pg.x*0.5}px`;
-          /// this.cs.style.top = `${pg.y*0.5}px`;
+          // this.cs.style.left = `${pg.x*0.5}px`;
+          // this.cs.style.top = `${pg.y*0.5}px`;
+          // this.cs.style.width = `${pg.width*pg.r}px`;
+          // this.cs.style.height = `${pg.height*pg.r}px`;
 
-          this.cs.style.width = `${pg.width*pg.r}px`;
-          this.cs.style.height = `${pg.height*pg.r}px`;
+          this.cs.width = pg.width*dpr*pg.r;
+          this.cs.height = pg.height*dpr*pg.r;
+          this.cx.scale(pg.scale, pg.scale);
 
-          // this.cs.width = pg.width*dpr*pg.r;
-          // this.cs.height = pg.height*dpr*pg.r;
-
-          // this.cx.scale(1, 1);
-
-          /// this.cx.shadowColor = cs.s.c;
-          /// this.cx.shadowBlur = cs.s.b; /*/ Avoid the shadowBlur property whenever possible /*/
-          /// this.cx.shadowOffsetX = cs.s.xy.x;
-          /// this.cx.shadowOffsetY = cs.s.xy.y;
+          this.cx.shadowColor = cs.s.c;
+          this.cx.shadowBlur = cs.s.b; /*/ Avoid the shadowBlur property whenever possible /*/
+          this.cx.shadowOffsetX = cs.s.xy.x;
+          this.cx.shadowOffsetY = cs.s.xy.y;
 
           this.cx.clearRect(0, 0, pg.width, pg.height);
           this.cx.fillStyle = cs.c || '#fff';
@@ -666,13 +664,11 @@
 
           this.cs.style.left = `${this.x*0.5}px`;
           this.cs.style.top = `${this.y*0.5}px`;
-
           this.cs.style.width = `${this.width*this.r}px`;
           this.cs.style.height = `${this.height*this.r}px`;
 
           this.cs.width = this.width*dpr*this.r;
           this.cs.height = this.height*dpr*this.r;
-
           this.scale = dpr*this.r; /*/ Needed to adjust mouse position /*/
           this.cx.scale(this.scale, this.scale);
           this.bcr = this.cs.getBoundingClientRect();
