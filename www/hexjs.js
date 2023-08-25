@@ -926,7 +926,7 @@
         this.xml = xml
         /*/ COMMENT: Remove domments /*/.replace(/<!--(.*?)-->/g, '')
         /*/ SPACE: Remove two or more spaces /*/.replace(/\s{2,}/g, '');
-        const doc = new DOMParser().parseFromString(this.xml, 'text/xml');
+        const doc = new DOMParser().parseFromString(this.xml, 'application/xml'); /*/ text/xml /*/
         this.domain = doc.querySelector('pack').getAttribute('domain');
 
         /*/ Modules Function Structure > Plot > body /*/
