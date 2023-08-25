@@ -611,7 +611,7 @@
       /*/ play > trace < /*/
 
       /*/ play > setparticle > /*/
-      Play.prototype.setparticle = function (a) {
+      Play.prototype.setparticle = function (v) {
        
       }
       /*/ Modules Function Structure > Play < /*/
