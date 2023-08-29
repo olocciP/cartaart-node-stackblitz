@@ -116,7 +116,8 @@ const setload = v => {
     hPlay.fb.xy = v.xy;
     hPlay.fb.wh = v.wh;
     hPlay.fb.hv = v.hv;
-    hPlay.fb.pivot = { x: cs.w*0.5, y: (cs.h - v.wh[1].h)*0.5 + v.wh[1].h, pow: v.wh[1].w*v.wh[1].w };
+    const xy = { x: cs.w*0.5, y: (cs.h - v.wh[1].h)*0.5 + v.wh[1].h };
+    hPlay.fb.pivot = { x: xy.x, y: xy.y, pow: v.wh[1].w*v.wh[1].w };
     hPlay.fb.cc = v.cc;
     hPlay.fb.skip = [1, 5, 15, 25, 35, 55, 85, 135];
     hPlay.fb.mark = [];
