@@ -266,11 +266,11 @@
         /*/ Play > Flip Book > pos /*/
         const getpow = (dx, dy) => { return dx*dx + dy*dy; };
         const setmousedown = v => {
-          const { pos } = v;
+          const { p } = v;
           
-          if (!Object.keys(pos).length) return;
+          if (!Object.keys(p).length) return;
 
-          const xy = { x: parseInt(pos.x/r), y: parseInt(pos.y/r)};
+          const xy = { x: parseInt(p.x/r), y: parseInt(p.y/r) };
           if (this.pivot.pow < getpow(this.pivot.x - xy.x, this.pivot.y - xy.y)) return;
           if (this.page === this.len - 1 && this.pivot.x < xy.x) return; /// Last Right none pape
           if (this.page === 0 && this.pivot.x > xy.x) return; /// First left none page
@@ -283,14 +283,14 @@
           this.off = ps[this.page].xy[0].x === this.pivot.x ? 1 : -1;
           
         };
-        setmousedown({ pos: pos.start });
+        setmousedown({ p: pos.start });
 
         const setmouseup = v => {
-          const { pos } = v;
+          const { p } = v;
           
-          if (!Object.keys(pos).length) return;
+          if (!Object.keys(p).length) return;
 
-          const xy = { x: parseInt(pos.x/r), y: parseInt(pos.y/r)};
+          const xy = { x: parseInt(p.x/r), y: parseInt(p.y/r) };
           this.on = true; /// Auto position
           if (this.page%2 && this.xy[0].x > this.xy[1].x || !(this.page%2) && this.xy[0].x < this.xy[1].x) { /// Cancel flip
             this.xy[0].x = 0;
@@ -305,17 +305,17 @@
         
           console.log(this.page, ' : current left page');
         };
-        setmouseup({ pos: pos.end });
+        setmouseup({ p: pos.end });
 
         const setmousemove = v => {
-          const { pos } = v;
+          const { p } = v;
 
           if (!this.on) return;
 
-          const xy = { x: parseInt(pos.x/r), y: parseInt(pos.y/r)};
+          const xy = { x: parseInt(p.x/r), y: parseInt(p.y/r) };
           if (this.pivot.pow > getpow(this.pivot.x - xy.x, this.pivot.y - xy.y)) {
             if(this.page%2 && xy.x > this.pivot.x || !(this.page%2) && xy.x < this.pivot.x || xy.y > this.pivot.y){
-              setmouseup({ xy: pos.move });
+              setmouseup({ p: pos.move });
               
             }else{
               this.xy[1].x = xy.x;
@@ -323,10 +323,10 @@
             }
             
           } else {
-            setmouseup({ pos: pos.move });
+            setmouseup({ p: pos.move });
           }
         };
-        setmousemove({ pos: pos.move });
+        setmousemove({ p: pos.move });
 
         /*/ Play > Flip Book > POSition of mouse /*/
         const setfbp = v => {
@@ -337,7 +337,7 @@
           /*/ Tracking mouse position and flipping /*/
           if (this.on) {
             const xy = { x: 0, y: 0 };
-
+            
             if (this.off > 0) { xy.x = this.xy[1].x > e.xy[0].x + e.wh[0].w ? e.wh[0].w - 0.1 : this.xy[1].x - e.xy[0].x; } 
             else { xy.x = this.xy[1].x > e.xy[0].x ? this.xy[1].x - e.xy[0].x : 0.1; }
             xy.y = this.xy[1].y > e.xy[0].y + e.wh[0].h ? e.wh[0].h - 0.1 : this.xy[1].y - e.xy[0].y;
