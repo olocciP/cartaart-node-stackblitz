@@ -112,7 +112,6 @@ const setload = v => {
     if(v.objs.length%2 /*/ Must be even /*/){ v.objs.push(''); }
     hPlay.fb.len = v.objs.length;
     hPlay.fb.gf = 0.8; /*/ Gravitational Force /*/
-
     hPlay.fb.xy = v.xy;
     hPlay.fb.wh = v.wh;
     hPlay.fb.hv = v.hv;
