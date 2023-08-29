@@ -125,8 +125,7 @@ const setload = v => {
     v.objs.forEach((e, i) => {
       e = e.length ? e : String.fromCharCode(v.cc.code + i); /*/ Index Image String /*/
       // const c = `#${Math.floor(Math.random()*16777215).toString(16)}`;
-      const c = `hsl(${360*Math.random()}, 100%, 80%)`; /*/ Pastel /*/
-      // hPart.fbps.unshift(new hPart.fbp({ x: xy.x, y: xy.y - v.wh[1].h, w: v.wh[1].w, h: v.wh[1].h, c: c, str: e }));
+      const c = `hsla(${parseInt(36*Math.random())*10}, 100%, 80%, 1)`; /*/ Pastel /*/
       hPart.fbps.push(new hPart.fbp({ x: xy.x, y: xy.y - v.wh[1].h, w: v.wh[1].w, h: v.wh[1].h, c: c, str: e }));
     });
   });
