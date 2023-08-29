@@ -83,11 +83,6 @@
         this.setclear = function (v) {
           const { cs /*/ hPlot.cs - CanvaS Data /*/, pg /*/ hPage /*/, dpr /*/ hPlan.wds.dpr /*/ } = v;
           
-          // this.cs.style.left = `${pg.x*0.5}px`;
-          // this.cs.style.top = `${pg.y*0.5}px`;
-          // this.cs.style.width = `${pg.width*pg.r}px`;
-          // this.cs.style.height = `${pg.height*pg.r}px`;
-
           this.cs.width = pg.width*dpr*pg.r;
           this.cs.height = pg.height*dpr*pg.r;
           this.cx.scale(pg.scale, pg.scale);
@@ -99,7 +94,7 @@
 
           this.cx.clearRect(0, 0, pg.width, pg.height);
           this.cx.fillStyle = cs.c || '#fff';
-          // cx.fillRect(0, 0, width, height);
+          /// this.cx.fillRect(0, 0, width, height);
         };
       }
 
@@ -239,7 +234,6 @@
         const { img, xy, wh, hv } = v;
 
         const r = Math.atan2(hv.v - xy.y, hv.h - xy.x) + Math.PI*0.5;
-
         // this.cx.save();
         this.cx.translate(xy.x, xy.y);
         this.cx.rotate(r);
@@ -351,7 +345,7 @@
 
           /*/ Continue Flip or Cancel Flip position /*/
           } else {
-            if (Math.abs(this.off)) { /// Continue Flip
+            if (Math.abs(this.off)) { /*/ Continue Flip /*/
               if (this.xy[0].x * this.xy[0].y) {
                 this.xy[1].x = this.xy[1].x*this.gf;
                 this.xy[1].y = this.xy[1].y*this.gf;
@@ -364,17 +358,17 @@
                 e.xy[1].y = e.wh[0].h - xy.y;
 
                 if (Math.abs(this.xy[1].x) < 1 && this.xy[1].y < 1) {
-                  const osp = this.page; /// Other Side Page
+                  const osp = this.page; /*/ Other Side Page /*/
                   this.page = (this.len + this.page + this.off)%this.len;
 
-                  const odd = this.page%2; /// Odd : 1, Even : 0
+                  const odd = this.page%2; /*/ Odd : 1, Even : 0 /*/
                   ps[osp].xy[0].x = this.pivot.x - ps[osp].wh[0].w*odd;
                   ps[this.page].xy[0].x = this.pivot.x - ps[this.page].wh[0].w*odd;
 
                   ps[this.page].xy[1].x = 0;
                   ps[this.page].xy[1].y = 0;
 
-                  this.page = odd ? this.page : this.page ? this.page - 1 : this.page; /// Default odd pages, First page zero
+                  this.page = odd ? this.page : this.page ? this.page - 1 : this.page; /*/ Default odd pages, First page zero /*/
 
                   e.xy[1].x = 0;
                   e.xy[1].y = 0;
@@ -382,12 +376,12 @@
                   this.on = false;
                 }
 
-              } else { /// Cancel Flip
+              } else { /*/ Cancel Flip /*/
                 e.xy[1].x = e.xy[1].x*this.gf + 1;
                 e.xy[1].y = e.xy[1].y*this.gf + 1;
 
                 if (e.xy[1].x < this.gf*10 + 1 && e.xy[1].y < this.gf*10 + 1) {
-                  this.page = this.page%2 ? this.page : this.page ? this.page - 1 : this.page; /// Default odd pages, First page zero
+                  this.page = this.page%2 ? this.page : this.page ? this.page - 1 : this.page; /*/ Default odd pages, First page zero /*/
 
                   e.xy[1].x = 0;
                   e.xy[1].y = 0;
@@ -436,7 +430,7 @@
           setdraw({ c: sp.l.c[0], t: sp.l.str[0], xy: sp.l.xy[0], wh: sp.l.wh[0] });
           if((Math.abs(this.off) && n === l - 2) || (Math.abs(this.off) && n === l - 1)) { /* Doesn't draw 0 page at mouse move - A */ } 
           else { setdraw({ c: sp.r.c[0], t: sp.r.str[0], xy: sp.r.xy[0], wh: sp.r.wh[0] }); }
-
+          // console.log(l);
           /*/ Current page : '' /*/
           if (Math.abs(this.off)) {
             const fp /*/ Front Page /*/ = ps[n];
