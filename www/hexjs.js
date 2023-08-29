@@ -266,53 +266,55 @@
         /*/ Play > Flip Book > pos /*/
         const getpow = (dx, dy) => { return dx*dx + dy*dy; };
         const setmousedown = v => {
-          const { xy } = v;
+          const { pos } = v;
           
-          if (!Object.keys(xy).length) return;
-          
-          if (this.pivot.pow*r < getpow(this.pivot.x*r - xy.x, this.pivot.y*r - xy.y)) return;
-          if (this.page === this.len - 1 && this.pivot.x*r < xy.x) return; /// Last Right none pape
-          if (this.page === 0 && this.pivot.x*r > xy.x) return; /// First left none page
+          if (!Object.keys(pos).length) return;
 
+          const xy = { x: parseInt(pos.x/r), y: parseInt(pos.y/r)};
+          if (this.pivot.pow < getpow(this.pivot.x - xy.x, this.pivot.y - xy.y)) return;
+          if (this.page === this.len - 1 && this.pivot.x < xy.x) return; /// Last Right none pape
+          if (this.page === 0 && this.pivot.x > xy.x) return; /// First left none page
+         
           this.on = true;
           this.xy[0].x = this.xy[1].x = xy.x;
           this.xy[0].y = this.xy[1].y = xy.y;
         
-          if (this.pivot.x*r < xy.x) { this.page = this.page ? this.page + 1 : this.page; }
-          this.off = ps[this.page].xy[0].x === this.pivot.x*r ? 1 : -1;
+          if (this.pivot.x < xy.x) { this.page = this.page ? this.page + 1 : this.page; }
+          this.off = ps[this.page].xy[0].x === this.pivot.x ? 1 : -1;
           
-        };  
-        setmousedown({ xy: pos.start });
+        };
+        setmousedown({ pos: pos.start });
 
         const setmouseup = v => {
-          const { xy } = v;
+          const { pos } = v;
           
-          if (!Object.keys(xy).length) return;
+          if (!Object.keys(pos).length) return;
 
+          const xy = { x: parseInt(pos.x/r), y: parseInt(pos.y/r)};
           this.on = true; /// Auto position
           if (this.page%2 && this.xy[0].x > this.xy[1].x || !(this.page%2) && this.xy[0].x < this.xy[1].x) { /// Cancel flip
             this.xy[0].x = 0;
             this.xy[0].y = 0;
             
           } else { /// Continue flip - Current mouse position
-            this.xy[1].x = this.pivot.x*r + ps[this.page].wh[0].w*this.off - this.xy[1].x;
-            this.xy[1].y = xy.y > this.pivot.y*r ? this.pivot.y*r - 0.1 : xy.y;
-            this.xy[1].y = this.pivot.y*r - this.xy[1].y;
+            this.xy[1].x = this.pivot.x + ps[this.page].wh[0].w*this.off - this.xy[1].x;
+            this.xy[1].y = xy.y > this.pivot.y ? this.pivot.y - 0.1 : xy.y;
+            this.xy[1].y = this.pivot.y - this.xy[1].y;
           }
           this.on = false; /// Tracking mouse position
         
           console.log(this.page, ' : current left page');
         };
-
-        setmouseup({ xy: pos.end });
+        setmouseup({ pos: pos.end });
 
         const setmousemove = v => {
-          const { xy } = v;
+          const { pos } = v;
 
           if (!this.on) return;
 
-          if (this.pivot.pow*r > getpow(this.pivot.x*r - xy.x, this.pivot.y*r - xy.y)) {
-            if(this.page%2 && xy.x > this.pivot.x*r || !(this.page%2) && xy.x < this.pivot.x*r || xy.y > this.pivot.y*r){
+          const xy = { x: parseInt(pos.x/r), y: parseInt(pos.y/r)};
+          if (this.pivot.pow > getpow(this.pivot.x - xy.x, this.pivot.y - xy.y)) {
+            if(this.page%2 && xy.x > this.pivot.x || !(this.page%2) && xy.x < this.pivot.x || xy.y > this.pivot.y){
               setmouseup({ xy: pos.move });
               
             }else{
@@ -321,10 +323,10 @@
             }
             
           } else {
-            setmouseup({ xy: pos.move });
+            setmouseup({ pos: pos.move });
           }
         };
-        setmousemove({ xy: pos.move });
+        setmousemove({ pos: pos.move });
 
         /*/ Play > Flip Book > POSition of mouse /*/
         const setfbp = v => {
@@ -430,7 +432,7 @@
           setdraw({ c: sp.l.c[0], t: sp.l.str[0], xy: sp.l.xy[0], wh: sp.l.wh[0] });
           if((Math.abs(this.off) && n === l - 2) || (Math.abs(this.off) && n === l - 1)) { /* Doesn't draw 0 page at mouse move - A */ } 
           else { setdraw({ c: sp.r.c[0], t: sp.r.str[0], xy: sp.r.xy[0], wh: sp.r.wh[0] }); }
-          // console.log(l);
+
           /*/ Current page : '' /*/
           if (Math.abs(this.off)) {
             const fp /*/ Front Page /*/ = ps[n];

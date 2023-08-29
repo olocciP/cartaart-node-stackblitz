@@ -117,8 +117,9 @@ const setload = v => {
     hPlay.fb.wh = v.wh;
     hPlay.fb.hv = v.hv;
     const xy = { x: cs.w*0.5, y: (cs.h - v.wh[1].h)*0.5 + v.wh[1].h };
-    hPlay.fb.pivot = { x: xy.x, y: xy.y, pow: xy.x*xy.x + xy.y*xy.y };
-
+    const pow = v.wh[1].w*v.wh[1].w;
+    hPlay.fb.pivot = { x: xy.x, y: xy.y, pow: pow };
+    console.log(hPlay.fb.pivot, v.wh[1].w);
     hPlay.fb.cc = v.cc;
     hPlay.fb.skip = [1, 5, 15, 25, 35, 55, 85, 135];
     hPlay.fb.mark = [];
@@ -127,7 +128,8 @@ const setload = v => {
       e = e.length ? e : String.fromCharCode(v.cc.code + i); /*/ Index Image String /*/
       // const c = `#${Math.floor(Math.random()*16777215).toString(16)}`;
       const c = `hsl(${360*Math.random()}, 100%, 80%)`; /*/ Pastel /*/
-      hPart.fbps.unshift(new hPart.fbp({ x: xy.x, y: xy.y - v.wh[1].h, w: v.wh[1].w, h: v.wh[1].h, c: c, str: e }));
+      // hPart.fbps.unshift(new hPart.fbp({ x: xy.x, y: xy.y - v.wh[1].h, w: v.wh[1].w, h: v.wh[1].h, c: c, str: e }));
+      hPart.fbps.push(new hPart.fbp({ x: xy.x, y: xy.y - v.wh[1].h, w: v.wh[1].w, h: v.wh[1].h, c: c, str: e }));
     });
   });
 
