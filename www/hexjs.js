@@ -72,8 +72,8 @@
 
         this.width = width;
         this.height = height;
-        this.cs = cs; /*/ hPage.cs - CanvaS element /*/
-        this.cx = cx; /*/ hPage.cx - ConteXt element /*/
+        this.cs = cs; /*/ h.page.cs - CanvaS element /*/
+        this.cx = cx; /*/ h.page.cx - ConteXt element /*/
 
 
         this.touch.start = touch ? 'touchstart' : 'mousedown';
@@ -81,7 +81,7 @@
         this.touch.end = touch ? 'touchend' : 'mouseup';
 
         this.setclear = function (v) {
-          const { cs /*/ hPlot.cs - CanvaS Data /*/, pg /*/ hPage /*/, dpr /*/ hPlan.wds.dpr /*/ } = v;
+          const { cs /*/ h.plot.cs - CanvaS Data /*/, pg /*/ h.page /*/, dpr /*/ h.plan.wds.dpr /*/ } = v;
           
           this.cs.width = pg.width*dpr*pg.r;
           this.cs.height = pg.height*dpr*pg.r;
@@ -121,17 +121,17 @@
 
       /*/ Modules Function Structure > Play > Button > /*/
       Play.prototype.putbtns = function (v) {
-        const { g, key, behave, target, path, freq, dpr } = v;
+        const { g, key, behave, target, path, freq, dpr, hplot, hplan, hpack, hpage } = v;
 
         const k = key.replace(/\./g, '');
-        if (!parseInt(hPack[g][k].opt.ot * 10)) return;
+        if (!parseInt(hpack[g][k].opt.ot * 10)) return;
         
         /*/ Play > Button > Navigation > /*/
         if (typeof target === 'string') {
           const domain = behave.match(/(?<=\.\/)(.*)(?=\/)/g).join('');
-          if (hPlot.domain === domain) return;
+          if (hplot.domain === domain) return;
           
-          const p = hPack[g][k].bvr; /*/ Button Virtual Rect - path2D /*/
+          const p = hpack[g][k].bvr; /*/ Button Virtual Rect - path2D /*/
           p.rect(path.x, path.y, path.w, path.h);
           
           if (!Object.keys(this.pos.start).length) {
@@ -139,10 +139,10 @@
             const y = this.pos.move.y;
             if (isNaN(x) || isNaN(y)) return;
 
-            if (hPage.cx.isPointInPath(p, x*dpr, y*dpr)) {
-              hPack[g][k].opt.or = true;
+            if (hpage.cx.isPointInPath(p, x*dpr, y*dpr)) {
+              hpack[g][k].opt.or = true;
             } else {
-              hPack[g][k].opt.or = false;
+              hpack[g][k].opt.or = false;
             }
           }
           
@@ -151,9 +151,9 @@
             const y = this.pos.end.y;
             if (isNaN(x) || isNaN(y)) return;
             
-            if (hPage.cx.isPointInPath(p, x*dpr, y*dpr)) {
-              hPlan.behave = behave;
-              hPlan.status = false;
+            if (hpage.cx.isPointInPath(p, x*dpr, y*dpr)) {
+              hplan.behave = behave;
+              hplan.status = false;
             }
           }
         }
@@ -588,7 +588,7 @@
               
               if (!this.cnt) { /*/ all alphabets done /*/
                 this.str.forEach(e => { /*/ 'A', 'B', ... /*/
-                  const t = hPart.traces[e].p2s;
+                  const t = tr.p2s;
                   Object.keys(t).forEach((k, i) => { t[k].t.s.fill = '#fff' });
                 });
               }
