@@ -314,7 +314,7 @@ const setload = v => {
     hP.lay.fb.set({ ps: hP.art.fbps /*/ Flip Book PageS - array /*/, cx: cx, pos: xy, r: hP.age.r });
 
     Object.keys(hP.art.traces /*/ tracing alphabets /*/).forEach(e => {
-      hP.lay.trace.set({ tr: hP.art.traces[e], cx: cx, pos: xy, scale: hP.age.scale, dpr: hP.lan.wds.dpr });
+      hP.lay.trace.set({ tr: hP.art.traces[e], trs: hP.art.traces, cx: cx, pos: xy, scale: hP.age.scale, dpr: hP.lan.wds.dpr });
     });
 
     xy.start = {};

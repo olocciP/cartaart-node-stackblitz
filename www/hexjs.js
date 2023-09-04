@@ -476,7 +476,7 @@
       Play.prototype.trace = { str: [], len: 0, cnt: 0 }; /*/ Alphabet STRing: ['a', 'l', 'p', ...], LENgth, CouNT /*/
       
       Play.prototype.trace.set = function(v) {
-        const { tr, cx, pos, scale, dpr } = v;
+        const { tr, trs, cx, pos, scale, dpr } = v;
 
         cx.save();
         cx.beginPath();
@@ -588,7 +588,7 @@
               
               if (!this.cnt) { /*/ all alphabets done /*/
                 this.str.forEach(e => { /*/ 'A', 'B', ... /*/
-                  const t = tr.p2s;
+                  const t = trs[e].p2s;
                   Object.keys(t).forEach((k, i) => { t[k].t.s.fill = '#fff' });
                 });
               }
