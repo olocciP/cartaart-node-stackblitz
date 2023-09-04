@@ -13,22 +13,22 @@ document.addEventListener('contextmenu', e => { e.preventDefault(); }, false);
   window.addEventListener('message', e => window.addEventListener('load', () => setload({ xml: e.data.xml })));
 })();
 
-const h = {};
+const hP = {};
 
 /*/ Page Drop > /*/
 const setdrop = v => {
   const {} = v;
 
-  const behave = h.plan.behave;
+  const behave = hP.lan.behave;
   // console.clear();
-  console.log(`#Drop ${h.plot.domain}, get ${behave}`);
+  console.log(`#Drop ${hP.lot.domain}, get ${behave}`);
 
-  h.pack = null;
-  h.part = null;
-  h.play = null;
-  h.page = null;
-  h.plot = null;
-  h.plan = null;
+  hP.lay = null;
+  hP.age = null;
+  hP.art = null;
+  hP.ack = null;
+  hP.lot = null;
+  hP.lan = null;
 
   const icon = document.head.querySelector('link');
   icon.setAttribute( 'href', `./work/${behave}icon.svg` );
@@ -49,47 +49,47 @@ const setload = v => {
   const { xml } = v;
 
   /*/ First Plan /*/ 
-  h.plan = new HEX.Plan();
-  h.plan.init({ func: () => { return setframe({}); }, status: true });
+  hP.lan = new HEX.Plan();
+  hP.lan.init({ func: () => { return setframe({}); }, status: true });
 
   /*/ Second Plot /*/
-  h.plot = new HEX.Plot(); 
-  h.plot.init({ xml: xml });
-  const stage = h.plot.stage;
-  const stuff = h.plot.stuff;
-  const scene = h.plot.scene;
-  const svg = h.plot.svg;
-  const cs = /*/ canvas /*/ h.plot.cs
+  hP.lot = new HEX.Plot(); 
+  hP.lot.init({ xml: xml });
+  const stage = hP.lot.stage;
+  const stuff = hP.lot.stuff;
+  const scene = hP.lot.scene;
+  const svg = hP.lot.svg;
+  const cs = /*/ canvas /*/ hP.lot.cs
 
-  console.log('#Load', h.plot.domain);
+  console.log('#Load', hP.lot.domain);
   document.body.querySelector('iframe').remove();
 
   /*/ Third Page /*/
-  h.page = new HEX.Page();
-  h.page.init({ name: 'hex', id: 'hex', type: '2d', width: cs.w, height: cs.h, color: cs.c, body: h.plot.c });
-  h.page.set({ dpr: h.plan.wds.dpr, s: cs.s });
-  const cx = /*/ context /*/ h.page.cx;
+  hP.age = new HEX.Page();
+  hP.age.init({ name: 'hex', id: 'hex', type: '2d', width: cs.w, height: cs.h, color: cs.c, body: hP.lot.c });
+  hP.age.set({ dpr: hP.lan.wds.dpr, s: cs.s });
+  const cx = /*/ context /*/ hP.age.cx;
 
   /*/ Fourth Play /*/
-  h.play = new HEX.Play();
-  const touch = h.plan.wds.mob;
-  h.play.init({ width: cs.w, height: cs.h, cs: h.page.cs, cx: cx, touch: touch });
+  hP.lay = new HEX.Play();
+  const touch = hP.lan.wds.mob;
+  hP.lay.init({ width: cs.w, height: cs.h, cs: hP.age.cs, cx: cx, touch: touch });
 
-  window.addEventListener('resize', () => { h.page.setsize({ dpr: h.plan.wds.dpr, s: cs.s }) });
-  h.page.cs.addEventListener(h.play.touch.start, e => h.play.setpos({ e: e, type: 'start', touch: touch, bcr: h.page.bcr }), false);
-  h.page.cs.addEventListener(h.play.touch.move, e => h.play.setpos({ e: e, type: 'move', touch: touch, bcr: h.page.bcr }), false);
-  h.page.cs.addEventListener(h.play.touch.end, e => h.play.setpos({ e: e, type: 'end', touch: touch, bcr: h.page.bcr }), false);
+  window.addEventListener('resize', () => { hP.age.setsize({ dpr: hP.lan.wds.dpr, s: cs.s }) });
+  hP.age.cs.addEventListener(hP.lay.touch.start, e => hP.lay.setpos({ e: e, type: 'start', touch: touch, bcr: hP.age.bcr }), false);
+  hP.age.cs.addEventListener(hP.lay.touch.move, e => hP.lay.setpos({ e: e, type: 'move', touch: touch, bcr: hP.age.bcr }), false);
+  hP.age.cs.addEventListener(hP.lay.touch.end, e => hP.lay.setpos({ e: e, type: 'end', touch: touch, bcr: hP.age.bcr }), false);
 
   /*/ Fifth  Part /*/
-  h.part = new HEX.Part();
-  h.part.init({ width: cs.w, height: cs.h, cx: cx });
+  hP.art = new HEX.Part();
+  hP.art.init({ width: cs.w, height: cs.h, cx: cx });
 
   /*/ stage > part /*/
   Object.keys(stage.part).forEach(e => {
     const v = {};
     for (let key in stage.part[e]) { v[key] = stage.part[e][key]; }
 
-    h.part[e] = v;
+    hP.art[e] = v;
   });
 
   /*/ stuff > part /*/
@@ -97,7 +97,7 @@ const setload = v => {
     const v = {};
     for (let key in stuff.part[e]) { v[key] = stuff.part[e][key]; }
 
-    h.part[e] = v;
+    hP.art[e] = v;
   });
 
   /*/ stuff > part > flipbook /*/
@@ -106,32 +106,32 @@ const setload = v => {
 
     for (let key in stuff.flipbook[e]) { v[key] = stuff.flipbook[e][key]; }
 
-    h.play.fb.on = false; /*/ true, false /*/
-    h.play.fb.off = 0; /*/ -1, 0 ,1 /*/
-    h.play.fb.page = 0;
+    hP.lay.fb.on = false; /*/ true, false /*/
+    hP.lay.fb.off = 0; /*/ -1, 0 ,1 /*/
+    hP.lay.fb.page = 0;
     if(v.objs.length%2 /*/ Must be even /*/){ v.objs.push(''); }
-    h.play.fb.len = v.objs.length;
-    h.play.fb.gf = 0.8; /*/ Gravitational Force /*/
-    h.play.fb.xy = v.xy;
-    h.play.fb.wh = v.wh;
-    h.play.fb.hv = v.hv;
+    hP.lay.fb.len = v.objs.length;
+    hP.lay.fb.gf = 0.8; /*/ Gravitational Force /*/
+    hP.lay.fb.xy = v.xy;
+    hP.lay.fb.wh = v.wh;
+    hP.lay.fb.hv = v.hv;
     const xy = { x: cs.w*0.5, y: (cs.h - v.wh[1].h)*0.5 + v.wh[1].h };
-    h.play.fb.pivot = { x: xy.x, y: xy.y, pow: v.wh[1].w*v.wh[1].w };
-    h.play.fb.cc = v.cc;
-    h.play.fb.skip = [1, 5, 15, 25, 35, 55, 85, 135];
-    h.play.fb.mark = [];
+    hP.lay.fb.pivot = { x: xy.x, y: xy.y, pow: v.wh[1].w*v.wh[1].w };
+    hP.lay.fb.cc = v.cc;
+    hP.lay.fb.skip = [1, 5, 15, 25, 35, 55, 85, 135];
+    hP.lay.fb.mark = [];
 
     v.objs.forEach((e, i) => {
       e = e.length ? e : String.fromCharCode(v.cc.code + i); /*/ Index Image String /*/
       // const c = `#${Math.floor(Math.random()*16777215).toString(16)}`;
       const c = `hsla(${parseInt(36*Math.random())*10}, 100%, 80%, 1)`; /*/ Pastel /*/
-      h.part.fbps.push(new h.part.fbp({ x: xy.x, y: xy.y - v.wh[1].h, w: v.wh[1].w, h: v.wh[1].h, c: c, str: e }));
+      hP.art.fbps.push(new hP.art.fbp({ x: xy.x, y: xy.y - v.wh[1].h, w: v.wh[1].w, h: v.wh[1].h, c: c, str: e }));
     });
   });
 
   /*/ stuff > part > trace /*/
   Object.keys(stuff.trace).forEach(e => {
-    const v = h.part.setpath({ svg: svg.obj, obj: stuff.trace[e].obj });
+    const v = hP.art.setpath({ svg: svg.obj, obj: stuff.trace[e].obj });
 
     for (let key in stuff.trace[e]) { v[key] = stuff.trace[e][key]; }
     v.ss.cnt = 1;
@@ -139,56 +139,56 @@ const setload = v => {
     v.drag = {};
     v.code = v.obj.split('_')[1].charCodeAt(); /*/ code for English, Korean... /*/
 
-    h.play.trace.str.push(v.code);
-    h.part.traces[v.code] = v;
+    hP.lay.trace.str.push(v.code);
+    hP.art.traces[v.code] = v;
   });
-  h.play.trace.len = h.play.trace.str.length;
+  hP.lay.trace.len = hP.lay.trace.str.length;
 
   /*/ Sixth Pack /*/
-  h.pack = new HEX.Pack(); 
-  h.pack.init({ width: cs.w, height: cs.h, cx: cx });
+  hP.ack = new HEX.Pack(); 
+  hP.ack.init({ width: cs.w, height: cs.h, cx: cx });
 
   /*/ stage > pack > gradient /*/
   Object.keys(stage.gradient).forEach((e, i, k) => {
     const v = {};
     for (let key in stage.gradient[e]) { v[key] = stage.gradient[e][key]; }
-    v.fn = h.pack['set' + stage.gradient[e].type];
+    v.fn = hP.ack['set' + stage.gradient[e].type];
 
-    if(stage.gradient[e].g.length) { h.part[stage.gradient[e].g].rsc.push(e); }
-    h.pack.gradients[k[i]] = v;
+    if(stage.gradient[e].g.length) { hP.art[stage.gradient[e].g].rsc.push(e); }
+    hP.ack.gradients[k[i]] = v;
   });
 
   /*/ stage > pack > face /*/
   Object.keys(stage.face).forEach((e, i, k) => {
-    const v = h.pack.setsvg({ prefix: 'data:image/svg+xml;charset=utf-8,', svg: svg.obj, obj: stage.face[e].obj });
+    const v = hP.ack.setsvg({ prefix: 'data:image/svg+xml;charset=utf-8,', svg: svg.obj, obj: stage.face[e].obj });
     
     for (let key in stage.face[e]) { v[key] = stage.face[e][key]; }
     
-    if(stage.face[e].g.length) { h.part[stage.face[e].g].rsc.push(e); }
-    h.pack.faces[k[i]] = v;
+    if(stage.face[e].g.length) { hP.art[stage.face[e].g].rsc.push(e); }
+    hP.ack.faces[k[i]] = v;
   });
 
   /*/ stage > pack > shape /*/
   Object.keys(stage.shape).forEach((e, i, k) => {
     const v = {};
     for (let key in stage.shape[e]) { v[key] = stage.shape[e][key]; }
-    v.fn = h.pack['set' + stage.shape[e].type];
+    v.fn = hP.ack['set' + stage.shape[e].type];
 
-    if(stage.shape[e].g.length) { h.part[stage.shape[e].g].rsc.push(e); }
-    h.pack.shapes[k[i]] = v;
+    if(stage.shape[e].g.length) { hP.art[stage.shape[e].g].rsc.push(e); }
+    hP.ack.shapes[k[i]] = v;
   });
 
   /*/ stage > pack > button /*/
   Object.keys(stage.btn).forEach((e, i, k) => {
-    const v = h.pack.setsvg({ prefix: 'data:image/svg+xml;charset=utf-8,', svg: svg.obj, obj: stage.btn[e].obj });
+    const v = hP.ack.setsvg({ prefix: 'data:image/svg+xml;charset=utf-8,', svg: svg.obj, obj: stage.btn[e].obj });
  
     stage.btn[e].xy.push({ x: stage.btn[e].xy[1].x + stage.btn[e].xy[0].x, y: stage.btn[e].xy[1].y + stage.btn[e].xy[0].y });
     stage.btn[e].wh.push({ w: stage.btn[e].wh[1].w + stage.btn[e].wh[0].w, h: stage.btn[e].wh[1].h + stage.btn[e].wh[0].h });
     for (let key in stage.btn[e]) { v[key] = stage.btn[e][key]; }
 
-    if(stage.btn[e].g.length) { h.part[stage.btn[e].g].rsc.push(e); }
+    if(stage.btn[e].g.length) { hP.art[stage.btn[e].g].rsc.push(e); }
     v.bvr = new Path2D(); /*/ Button Virtual Rect /*/
-    h.pack.btns[k[i]] = v;
+    hP.ack.btns[k[i]] = v;
   });
 
   /*/ stage > pack > string /*/
@@ -196,8 +196,8 @@ const setload = v => {
     const v = {};
     for (let key in stage.str[e]) { v[key] = stage.str[e][key]; }
 
-    if(stage.str[e].g.length) { h.part[stage.str[e].g].rsc.push(e); }
-    h.pack.strs[k[i]] = v;
+    if(stage.str[e].g.length) { hP.art[stage.str[e].g].rsc.push(e); }
+    hP.ack.strs[k[i]] = v;
   });
 
   /*/ stage > pack > event - button /*/
@@ -205,8 +205,8 @@ const setload = v => {
     const v = {};
     for (let key in stage.evt[e]) { v[key] = stage.evt[e][key]; }
 
-    v.dpr = h.plan.wds.dpr; /*/ devicePixelRatio for position x, y /*/
-    h.pack.evts[k[i]] = v;
+    v.dpr = hP.lan.wds.dpr; /*/ devicePixelRatio for position x, y /*/
+    hP.ack.evts[k[i]] = v;
   });
 
   /*/ stage > pack > event - timer /*/
@@ -214,19 +214,19 @@ const setload = v => {
     const v = {};
     for (let key in stage.time[e]) { v[key] = stage.time[e][key]; }
 
-    h.pack.times[k[i]] = v;
+    hP.ack.times[k[i]] = v;
   });
 
   /*/  stuff > pack > /*/
   Object.keys(stuff.part).forEach(e => {
     const v = {};
     for (let key in stuff.part[e]) { v[key] = stuff.part[e][key]; }
-    h.part[e] = v;
+    hP.art[e] = v;
   });
 
   /*/  stuff > pack > prop /*/
   Object.keys(stuff.prop).forEach((e, i, k) => {
-    const v = h.pack.setsvg({ prefix: 'data:image/svg+xml;charset=utf-8,', svg: svg.obj, obj: stuff.prop[e].obj });
+    const v = hP.ack.setsvg({ prefix: 'data:image/svg+xml;charset=utf-8,', svg: svg.obj, obj: stuff.prop[e].obj });
     for (let key in stuff.prop[e]) { v[key] = stuff.prop[e][key]; }
     
     const d = stuff.prop[e].path;
@@ -235,14 +235,14 @@ const setload = v => {
       path.setAttributeNS(null, 'd', d);
       const pathLength = Math.floor(path.getTotalLength());
 
-      h.play.paths[k[i]] = {d: path, l: pathLength};
+      hP.lay.paths[k[i]] = {d: path, l: pathLength};
     }
-    h.pack.props[k[i]] = v;
+    hP.ack.props[k[i]] = v;
   });
 
   /*/  stuff > pack > cast /*/
   Object.keys(stuff.cast).forEach((e, i, k) => {
-    const v = h.pack.setsvg({ prefix: 'data:image/svg+xml;charset=utf-8,', svg: svg.obj, obj: stuff.cast[e].objs });
+    const v = hP.ack.setsvg({ prefix: 'data:image/svg+xml;charset=utf-8,', svg: svg.obj, obj: stuff.cast[e].objs });
     for (let key in stuff.cast[e]) { v[key] = stuff.cast[e][key]; }
 
     const d = stuff.cast[e].path;
@@ -251,9 +251,9 @@ const setload = v => {
       path.setAttributeNS(null, 'd', d);
       const pathLength = Math.floor(path.getTotalLength());
 
-      h.play.paths[k[i]] = {d: path, l: pathLength};
+      hP.lay.paths[k[i]] = {d: path, l: pathLength};
     }
-    h.pack.casts[k[i]] = v;
+    hP.ack.casts[k[i]] = v;
   });
 
   /*/ stuff > pack > effect /*/
@@ -261,30 +261,30 @@ const setload = v => {
     const v = {};
     for (let key in stuff.eft[e]) { v[key] = stuff.eft[e][key]; }
 
-    v.fn = h.pack['set' + stuff.eft[e].type];
-    h.pack.efts[k[i]] = v;
+    v.fn = hP.ack['set' + stuff.eft[e].type];
+    hP.ack.efts[k[i]] = v;
   });
   /*/  Pack > scene /*/
 
   /*/ setframe > /*/
-  const faces = h.pack.faces;
-  const btns = h.pack.btns;
-  const props = h.pack.props;
-  const casts = h.pack.casts;
+  const faces = hP.ack.faces;
+  const btns = hP.ack.btns;
+  const props = hP.ack.props;
+  const casts = hP.ack.casts;
 
   const setframe = v => {
     const {} = v;
 
-    h.play.setclear({ cs: /*/ h.plot.cs /*/ cs, pg: h.page, dpr: h.plan.wds.dpr });
-    const xy = h.play.pos;
+    hP.lay.setclear({ cs: /*/ hP.lot.cs /*/ cs, pg: hP.age, dpr: hP.lan.wds.dpr });
+    const xy = hP.lay.pos;
 
-    Object.keys(h.pack.gradients).forEach(e => { h.pack.gradients[e].fn(h.pack.gradients[e]); });
+    Object.keys(hP.ack.gradients).forEach(e => { hP.ack.gradients[e].fn(hP.ack.gradients[e]); });
     Object.keys(faces).forEach(e => {
       cx.drawImage(faces[e].img, faces[e].xy[1].x, faces[e].xy[1].y, faces[e].wh[1].w, faces[e].wh[1].h);
     });
     
-    Object.keys(h.pack.shapes).forEach(e => { h.pack.shapes[e].fn(h.pack.shapes[e]); });
-    Object.keys(h.pack.strs).forEach(e => { h.pack.setstr(h.pack.strs[e]); });
+    Object.keys(hP.ack.shapes).forEach(e => { hP.ack.shapes[e].fn(hP.ack.shapes[e]); });
+    Object.keys(hP.ack.strs).forEach(e => { hP.ack.setstr(hP.ack.strs[e]); });
 
     Object.keys(btns).forEach(e => {
       if(parseInt(btns[e].opt.ot*10)){
@@ -294,39 +294,39 @@ const setload = v => {
     });
     
     Object.keys(props).forEach(e => {
-      h.play.setmove({xy: props[e].xy, hv: props[e].hv, by: "", path: h.play.paths[e], p: props[e].p});
-      h.play.setdraw({img: props[e].img, xy: props[e].xy[1], wh: props[e].wh[1], hv: props[e].hv[1]});
+      hP.lay.setmove({xy: props[e].xy, hv: props[e].hv, by: "", path: hP.lay.paths[e], p: props[e].p});
+      hP.lay.setdraw({img: props[e].img, xy: props[e].xy[1], wh: props[e].wh[1], hv: props[e].hv[1]});
     });
 
     Object.keys(casts).forEach(e => {
-      h.play.setmove({xy: casts[e].xy, hv: casts[e].hv, by: casts[e].by, path: h.play.paths[e], p: casts[e].p});
+      hP.lay.setmove({xy: casts[e].xy, hv: casts[e].hv, by: casts[e].by, path: hP.lay.paths[e], p: casts[e].p});
       const n = casts[e].by.n;
-      h.play.setdraw({img: casts[e].img[n], xy: casts[e].xy[1], wh: casts[e].wh[1], hv: casts[e].hv[1]});
+      hP.lay.setdraw({img: casts[e].img[n], xy: casts[e].xy[1], wh: casts[e].wh[1], hv: casts[e].hv[1]});
     });
 
-    Object.keys(h.pack.evts /*/ EVenTS /*/).forEach(e => {
-      const clone = Object.assign({}, h.pack.evts[e]);
-      clone.hplot = h.plot;
-      clone.hplan = h.plan;
-      clone.hpack = h.pack;
-      clone.hpage = h.page;
-      h.play['put'+h.pack.evts[e].type](clone);
+    Object.keys(hP.ack.evts /*/ EVenTS /*/).forEach(e => {
+      const clone = Object.assign({}, hP.ack.evts[e]);
+      clone.hplan = hP.lan;
+      clone.hplot = hP.lot;
+      clone.hpack = hP.ack;
+      clone.hpage = hP.age;
+      hP.lay['put'+hP.ack.evts[e].type](clone);
     });
-    Object.keys(h.pack.efts /*/ EFfecTS /*/).forEach(e => h.play['set'+h.pack.efts[e].type](h.pack.efts[e]));
+    Object.keys(hP.ack.efts /*/ EFfecTS /*/).forEach(e => hP.lay['set'+hP.ack.efts[e].type](hP.ack.efts[e]));
     
-    h.play.fb.set({ ps: h.part.fbps /*/ Flip Book PageS - array /*/, cx: cx, pos: h.play.pos, r: h.page.r });
+    hP.lay.fb.set({ ps: hP.art.fbps /*/ Flip Book PageS - array /*/, cx: cx, pos: xy, r: hP.age.r });
 
-    Object.keys(h.part.traces /*/ tracing alphabets /*/).forEach(e => {
-      h.play.trace.set({ tr: h.part.traces[e], cx: cx, pos: h.play.pos, scale: h.page.scale, dpr: h.plan.wds.dpr });
+    Object.keys(hP.art.traces /*/ tracing alphabets /*/).forEach(e => {
+      hP.lay.trace.set({ tr: hP.art.traces[e], cx: cx, pos: xy, scale: hP.age.scale, dpr: hP.lan.wds.dpr });
     });
 
-    h.play.pos.start = {};
-    h.play.pos.end = {}; 
+    xy.start = {};
+    xy.end = {};
 
-    if(!h.plan.status) { h.plan.func = () => { return setdrop({}); }; }
-    requestAnimationFrame(h.plan.func);
+    if(!hP.lan.status) { hP.lan.func = () => { return setdrop({}); }; }
+    requestAnimationFrame(hP.lan.func);
   };
   /*/ setframe < /*/
   
-  requestAnimationFrame(h.plan.func);
+  requestAnimationFrame(hP.lan.func);
 };

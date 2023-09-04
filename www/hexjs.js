@@ -72,8 +72,8 @@
 
         this.width = width;
         this.height = height;
-        this.cs = cs; /*/ h.page.cs - CanvaS element /*/
-        this.cx = cx; /*/ h.page.cx - ConteXt element /*/
+        this.cs = cs; /*/ hP.age.cs - CanvaS element /*/
+        this.cx = cx; /*/ hP.age.cx - ConteXt element /*/
 
 
         this.touch.start = touch ? 'touchstart' : 'mousedown';
@@ -81,7 +81,7 @@
         this.touch.end = touch ? 'touchend' : 'mouseup';
 
         this.setclear = function (v) {
-          const { cs /*/ h.plot.cs - CanvaS Data /*/, pg /*/ h.page /*/, dpr /*/ h.plan.wds.dpr /*/ } = v;
+          const { cs /*/ h.plot.cs - CanvaS Data /*/, pg /*/ hP.age /*/, dpr /*/ hP.lan.wds.dpr /*/ } = v;
           
           this.cs.width = pg.width*dpr*pg.r;
           this.cs.height = pg.height*dpr*pg.r;
@@ -121,7 +121,7 @@
 
       /*/ Modules Function Structure > Play > Button > /*/
       Play.prototype.putbtns = function (v) {
-        const { g, key, behave, target, path, freq, dpr, hplot, hplan, hpack, hpage } = v;
+        const { g, key, behave, target, path, freq, dpr, hplan, hplot, hpack, hpage } = v;
 
         const k = key.replace(/\./g, '');
         if (!parseInt(hpack[g][k].opt.ot * 10)) return;
