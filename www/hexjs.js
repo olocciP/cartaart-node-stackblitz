@@ -1132,12 +1132,11 @@
             obj: e.querySelector('obj').textContent,
             loop: JSON.parse(e.querySelector('loop').textContent),
             len: parseInt(e.querySelector('len').textContent),
-            by: JSON.parse(e.querySelector('by').textContent),
             xy: JSON.parse(e.querySelector('xy').textContent),
             wh: JSON.parse(e.querySelector('wh').textContent),
             hv: JSON.parse(e.querySelector('hv').textContent),
             lt: JSON.parse(e.querySelector('lt').textContent),
-            flake: JSON.parse(e.querySelector('flake').textContent),
+            flc: JSON.parse(e.querySelector('flc').textContent),
             type: e.getAttribute('type')
           };
         });
