@@ -1130,13 +1130,14 @@
           this.stuff.eft[key] = {
             g: e.querySelector('g').textContent,
             obj: e.querySelector('obj').textContent,
-            key: e.querySelector('key').textContent,
             loop: JSON.parse(e.querySelector('loop').textContent),
-            amount: parseInt(e.querySelector('amount').textContent),
-            freq: parseInt(e.querySelector('freq').textContent),
-            const: parseFloat(e.querySelector('const').textContent),
-            dpt: JSON.parse(e.querySelector('dpt').textContent),
-            arv: JSON.parse(e.querySelector('arv').textContent),
+            len: parseInt(e.querySelector('len').textContent),
+            by: JSON.parse(e.querySelector('by').textContent),
+            xy: JSON.parse(e.querySelector('xy').textContent),
+            wh: JSON.parse(e.querySelector('wh').textContent),
+            hv: JSON.parse(e.querySelector('hv').textContent),
+            lt: JSON.parse(e.querySelector('lt').textContent),
+            flake: JSON.parse(e.querySelector('flake').textContent),
             type: e.getAttribute('type')
           };
         });

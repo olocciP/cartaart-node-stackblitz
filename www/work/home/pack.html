@@ -268,21 +268,22 @@
             <p>{"launch": true, "speed": {"x": 0, "y": 0}, "gravity": {"x": 0.0, "y": -0.02, "speed": {"x": 0.0, "y": 0.0}}, "bounce": 0.6}</p>
             <l>28</l> 
           </cast>
-          <eft type="particle">eft.gas._1 <!-- EFfecT -->
-            <g>cast</g>
-            <obj>launch_gas</obj>
-            <key>cast.rocket._1</key>
+          <eft type="particle">eft.snow._1 <!-- EFfecT -->
+            <g>snow</g>
+            <obj>snow_1</obj>
             <loop>{"times": 3, "end": false}</loop>
-            <amount>36</amount>
-            <freq>1</freq> <!-- frequency -->
-            <const>0.2</const>
-            <dpt>{"x": 0, "y": -16, "w": 100, "h": 100}</dpt> <!-- departure -->
-            <arv>{"x": 0, "y": -16, "w": 100, "h": 100}</arv> <!-- arrival -->
+            <len>36</len>
+            <by type="">{ "m": <!-- Method --> "", "i": <!-- Interval --> [30, 30], "q": <!-- Queue --> 0 }</by> 
+            <xy>[{"x": 0, "y": -1280}, {"x": 0, "y": 1280}]</xy> <!-- departure pos, arrival pos -->
+            <wh>[{"w": 1280, "h": 1280}, {"w": 1280, "h": 1}]</wh> <!-- departure rect, arrival rect -->
+            <hv>[{"h": 0, "v": 0.5}, {"h": 0, "v": 0}]</hv>
+            <lt>[{"l": 0, "t": 0}, {"l": 0, "t": 0}]</lt>
+            <flake>{ "xy": [{"x": 0, "y": 0}, {"x": 0, "y": 0}] }</flake>
           </eft>
           <flipbook>flipbook.alphabet._1
             <g>flipbook</g>
             <objs>["","","","","","","","","","","","","","","","","","","","","","","","",""]</objs>
-            <by type="">{"c": <!-- Cue --> "", "i": <!-- Interval --> [30, 30, 30], "q": <!-- Queue --> 0 }</by> <!-- BY self -->
+            <by type="">{ "m": <!-- Method --> "", "i": <!-- Interval --> [30, 30, 30], "q": <!-- Queue --> 0 }</by> <!-- BY self -->
             <xy>[{"x": 0, "y": 0}, {"x": 0, "y": 0}]</xy>
             <wh>[{"w": 0, "h": 0}, {"w": 384, "h": 512}]</wh>
             <hv>[{"h": 0, "v": 0}, {"h": 0, "v": 0}]</hv>
@@ -291,7 +292,7 @@
           <trace>trace.a._1
             <g>trace</g>
             <obj>trace_A</obj>
-            <by type="">{"c": <!-- Cue --> "", "i": <!-- Interval --> [30, 30, 30], "q": <!-- Queue --> 0 }</by> <!-- BY self -->
+            <by type="">{ "m": <!-- Method --> "", "i": <!-- Interval --> [30, 30, 30], "q": <!-- Queue --> 0 }</by> <!-- BY self -->
             <xy>[{"x": 640, "y": 640}, {"x": 640, "y": 640}]</xy>
             <wh>[{"w": 0, "h": 0}, {"w": 1000, "h": 1000}]</wh>
             <hv>[{"h": 0, "v": 0}, {"h": 0, "v": 0}]</hv>
@@ -302,7 +303,7 @@
           <trace>trace.b._1
             <g>trace</g>
             <obj>trace_B</obj>
-            <by type="">{"m": <!-- Method --> "", "i": <!-- Interval --> [30, 30], "q": <!-- Queue --> 0 }</by> 
+            <by type="">{ "m": <!-- Method --> "", "i": <!-- Interval --> [30, 30], "q": <!-- Queue --> 0 }</by> 
             <xy>[{"x": 640, "y": 640}, {"x": 640, "y": 640}]</xy>
             <wh>[{"w": 0, "h": 0}, {"w": 1000, "h": 1000}]</wh>
             <hv>[{"h": 0, "v": 0}, {"h": 0, "v": 0}]</hv>
@@ -403,6 +404,11 @@
           <obj type="url">cast_fish_left
           </obj>
           <obj type="url">cast_fish_right
+          </obj>
+          <obj type="data">snow_1
+            <svg width="50" height="50" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="50" cy="50" r="50" />
+            </svg>
           </obj>
         </svgs>
       </pack>
