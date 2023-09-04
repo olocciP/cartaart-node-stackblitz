@@ -121,17 +121,17 @@
 
       /*/ Modules Function Structure > Play > Button > /*/
       Play.prototype.putbtns = function (v) {
-        const { g, key, behave, target, path, freq, dpr, hplan, hplot, hpack, hpage } = v;
+        const { g, key, behave, target, path, freq, dpr, domain /*/ hP.lot /*/, btns /*/ hP.ack /*/, cx /*/ hP.age /*/, hplan } = v;
 
         const k = key.replace(/\./g, '');
-        if (!parseInt(hpack[g][k].opt.ot * 10)) return;
+        if (!parseInt(btns[k].opt.ot * 10)) return;
         
         /*/ Play > Button > Navigation > /*/
         if (typeof target === 'string') {
-          const domain = behave.match(/(?<=\.\/)(.*)(?=\/)/g).join('');
-          if (hplot.domain === domain) return;
+          const url = behave.match(/(?<=\.\/)(.*)(?=\/)/g).join('');
+          if (domain === url) return;
           
-          const p = hpack[g][k].bvr; /*/ Button Virtual Rect - path2D /*/
+          const p = btns[k].bvr; /*/ Button Virtual Rect - path2D /*/
           p.rect(path.x, path.y, path.w, path.h);
           
           if (!Object.keys(this.pos.start).length) {
@@ -139,10 +139,10 @@
             const y = this.pos.move.y;
             if (isNaN(x) || isNaN(y)) return;
 
-            if (hpage.cx.isPointInPath(p, x*dpr, y*dpr)) {
-              hpack[g][k].opt.or = true;
+            if (cx.isPointInPath(p, x*dpr, y*dpr)) {
+              btns[k].opt.or = true;
             } else {
-              hpack[g][k].opt.or = false;
+              btns[k].opt.or = false;
             }
           }
           
@@ -151,7 +151,7 @@
             const y = this.pos.end.y;
             if (isNaN(x) || isNaN(y)) return;
             
-            if (hpage.cx.isPointInPath(p, x*dpr, y*dpr)) {
+            if (cx.isPointInPath(p, x*dpr, y*dpr)) {
               hplan.behave = behave;
               hplan.status = false;
             }

@@ -305,7 +305,9 @@ const setload = v => {
     });
 
     Object.keys(hP.ack.evts /*/ EVenTS /*/).forEach(e => {
-      const clno = Object.assign({ hplan: hP.lan, hplot: hP.lot, hpack: hP.ack, hpage: hP.age }, hP.ack.evts[e]);
+      const btns = hP.ack[hP.ack.evts[e].g];
+      const v = { domain: hP.lot.domain, btns: btns, cx: hP.age.cx, hplan: hP.lan };
+      const clno = Object.assign(v, hP.ack.evts[e]);
       hP.lay['put'+hP.ack.evts[e].type](clno);
     });
     Object.keys(hP.ack.efts /*/ EFfecTS /*/).forEach(e => hP.lay['set'+hP.ack.efts[e].type](hP.ack.efts[e]));
