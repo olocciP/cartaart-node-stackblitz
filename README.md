@@ -2,11 +2,13 @@
 
 [Edit on StackBlitz](https://stackblitz.com/edit/cartaart-node)
 
-nona = Θ N⦵NA ⦵ ⨁ C⦻DA
-coda = ⨁ ⨁ Celtic-style crossed circle
+nonacoda > N⦵NAC⦻DA
+⨁ Celtic-style crossed circle
 
-NΘNACΘDA
-N⦵NAC⦻DA
+NΘNACΘD
+N⦵NAC⨁DA
+
+yeowooya
 
 All variable names are denoted by a consonant, separated at the end of the variable name by a vowel or semi-vowel.
 
@@ -15,4 +17,4 @@ All variable names are denoted by a consonant, separated at the end of the varia
 ~i: number,
 ~o: object,
 ~u: function,
-~y: class or prototype,
+~y: class or prototype
