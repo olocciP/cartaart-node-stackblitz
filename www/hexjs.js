@@ -268,8 +268,8 @@
         const setmousedown = v => {
           const { p } = v;
           
-          if (!Object.keys(p).length) return;
-
+          if (!Object.keys(p).length || this.on || this.off ) return;
+          
           const xy = { x: parseInt(p.x/r), y: parseInt(p.y/r) };
           if (this.pivot.pow < getpow(this.pivot.x - xy.x, this.pivot.y - xy.y)) return;
           if (this.page === this.len - 1 && this.pivot.x < xy.x) return; /// Last Right none pape
@@ -288,10 +288,9 @@
         const setmouseup = v => {
           const { p } = v;
           
-          if (!Object.keys(p).length) return;
+          if (!Object.keys(p).length || !this.on) return;
 
           const xy = { x: parseInt(p.x/r), y: parseInt(p.y/r) };
-          this.on = true; /// Auto position
           if (this.page%2 && this.xy[0].x > this.xy[1].x || !(this.page%2) && this.xy[0].x < this.xy[1].x) { /// Cancel flip
             this.xy[0].x = 0;
             this.xy[0].y = 0;
@@ -375,7 +374,6 @@
                   e.xy[1].x = 0;
                   e.xy[1].y = 0;
                   this.off = 0;
-                  this.on = false;
                 }
 
               } else { /*/ Cancel Flip /*/
@@ -388,7 +386,6 @@
                   e.xy[1].x = 0;
                   e.xy[1].y = 0;
                   this.off = 0;
-                  this.on = false;
                 }
               }
             }

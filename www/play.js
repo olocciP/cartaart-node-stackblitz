@@ -8,7 +8,7 @@ document.querySelector('head').appendChild(js);
 document.addEventListener('DOMContentLoaded', () => { });
 document.addEventListener('contextmenu', e => { e.preventDefault(); }, false);
 
-(() => { /// Cross events - Events appear out of order depending on the environment.
+(() => { /*/ Cross events - Events appear out of order depending on the environment. /*/
   window.addEventListener('load', () => window.addEventListener('message', e => setload({ xml: e.data.xml })));
   window.addEventListener('message', e => window.addEventListener('load', () => setload({ xml: e.data.xml })));
 })();
