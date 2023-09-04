@@ -13,7 +13,7 @@ document.addEventListener('contextmenu', e => { e.preventDefault(); }, false);
   window.addEventListener('message', e => window.addEventListener('load', () => setload({ xml: e.data.xml })));
 })();
 
-const hP = {};
+const hP = {}; /*/ HEX 6Ps /*/
 
 /*/ Page Drop > /*/
 const setdrop = v => {
@@ -305,12 +305,8 @@ const setload = v => {
     });
 
     Object.keys(hP.ack.evts /*/ EVenTS /*/).forEach(e => {
-      const clone = Object.assign({}, hP.ack.evts[e]);
-      clone.hplan = hP.lan;
-      clone.hplot = hP.lot;
-      clone.hpack = hP.ack;
-      clone.hpage = hP.age;
-      hP.lay['put'+hP.ack.evts[e].type](clone);
+      const clno = Object.assign({ hplan: hP.lan, hplot: hP.lot, hpack: hP.ack, hpage: hP.age }, hP.ack.evts[e]);
+      hP.lay['put'+hP.ack.evts[e].type](clno);
     });
     Object.keys(hP.ack.efts /*/ EFfecTS /*/).forEach(e => hP.lay['set'+hP.ack.efts[e].type](hP.ack.efts[e]));
     
