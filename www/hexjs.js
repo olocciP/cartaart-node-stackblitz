@@ -604,7 +604,8 @@
       /*/ play > trace < /*/
 
       /*/ play > setparticle > /*/
-      Play.prototype.setparticle = function (v) {
+      Play.prototype.particle =  { len: 0, xy: [{ x: 0, y: 0 }, { x: 0, y: 0 }], wh : [{ w: 0, h: 0 }, { w: 0, h: 0 }]};
+      Play.prototype.particle.set = function (v) {
        
       }
       /*/ Modules Function Structure > Play < /*/
@@ -694,16 +695,30 @@
 
       /*/ Modules Function Structure > Part > fbp > /*/
       Part.prototype.fbp = function (v) { /*/ Flip Book Page /*/
-        const { x, y, w, h, c, str} = v;
+        const { xy, wh, c, str } = v;
 
         this.img = [];
-        this.xy = [{ x: x, y: y }, { x: 0, y: 0 }];
-        this.wh = [{ w: w, h: h }, { w: 0, h: 0 }];
-        this.c = [c, 0];
+        this.xy = [{ x: xy.x, y: xy.y }, { x: 0, y: 0 }];
+        this.wh = [{ w: wh.w, h: wh.h }, { w: 0, h: 0 }];
+        this.c = [c, "#000"];
         this.r = [0, 0];
         this.str = [str, '']; /*/ Index Image String /*/
       };
       /*/ Modules Function Structure > Part > fbp < /*/
+
+      /*/ Modules Function Structure > Part > flake > /*/
+      Part.prototype.flake = function (v) { /*/ Particle /*/
+        const { dxy, dwh, dhv, dlt, dc, axy, awh, ahv, alt, ac } = v; /*/ depart arrive /*/
+
+        this.img = [];
+        this.xy = [{ x: dxy.x, y: dxy.y }, { x: 0, y: 0 }, { x: axy.x, y: axy.y }];
+        this.wh = [{ w: dwh.w, h: dwh.h }, { w: 0, h: 0 }, { w: awh.w, h: awh.h }];
+        this.hv = [{ h: dhv.h, v: dhv.v }, { h: 0, v: 0 }, { h: ahv.h, v: ahv.v }];
+        this.lt = [{ l: dlt.l, t: dlt.t }, { l: 0, t: 0 }, { l: alt.l, t: alt.t }];
+        this.c = [dc, "#000", ac];
+        this.r = [0, 0, 0];
+      };
+      /*/ Modules Function Structure > Part > flake < /*/
 
       // Part.prototype.setbtns = function (v) {
       //   const { packs, whs, sizes, freq } = v;

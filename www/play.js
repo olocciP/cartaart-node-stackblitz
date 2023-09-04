@@ -125,7 +125,7 @@ const setload = v => {
       e = e.length ? e : String.fromCharCode(v.cc.code + i); /*/ Index Image String /*/
       // const c = `#${Math.floor(Math.random()*16777215).toString(16)}`;
       const c = `hsla(${parseInt(36*Math.random())*10}, 100%, 80%, 1)`; /*/ Pastel /*/
-      hP.art.fbps.push(new hP.art.fbp({ x: xy.x, y: xy.y - v.wh[1].h, w: v.wh[1].w, h: v.wh[1].h, c: c, str: e }));
+      hP.art.fbps.push(new hP.art.fbp({ xy: { x: xy.x, y: xy.y - v.wh[1].h }, wh: { w: v.wh[1].w, h: v.wh[1].h }, c: c, str: e }));
     });
   });
 
@@ -149,37 +149,38 @@ const setload = v => {
   hP.ack.init({ width: cs.w, height: cs.h, cx: cx });
 
   /*/ stage > pack > gradient /*/
-  Object.keys(stage.gradient).forEach((e, i, k) => {
+  Object.keys(stage.gradient).forEach(e  => {
     const v = {};
     for (let key in stage.gradient[e]) { v[key] = stage.gradient[e][key]; }
     v.fn = hP.ack['set' + stage.gradient[e].type];
 
     if(stage.gradient[e].g.length) { hP.art[stage.gradient[e].g].rsc.push(e); }
-    hP.ack.gradients[k[i]] = v;
+
+    hP.ack.gradients[e] = v;
   });
 
   /*/ stage > pack > face /*/
-  Object.keys(stage.face).forEach((e, i, k) => {
+  Object.keys(stage.face).forEach(e => {
     const v = hP.ack.setsvg({ prefix: 'data:image/svg+xml;charset=utf-8,', svg: svg.obj, obj: stage.face[e].obj });
     
     for (let key in stage.face[e]) { v[key] = stage.face[e][key]; }
     
     if(stage.face[e].g.length) { hP.art[stage.face[e].g].rsc.push(e); }
-    hP.ack.faces[k[i]] = v;
+    hP.ack.faces[e] = v;
   });
 
   /*/ stage > pack > shape /*/
-  Object.keys(stage.shape).forEach((e, i, k) => {
+  Object.keys(stage.shape).forEach(e => {
     const v = {};
     for (let key in stage.shape[e]) { v[key] = stage.shape[e][key]; }
     v.fn = hP.ack['set' + stage.shape[e].type];
 
     if(stage.shape[e].g.length) { hP.art[stage.shape[e].g].rsc.push(e); }
-    hP.ack.shapes[k[i]] = v;
+    hP.ack.shapes[e] = v;
   });
 
   /*/ stage > pack > button /*/
-  Object.keys(stage.btn).forEach((e, i, k) => {
+  Object.keys(stage.btn).forEach(e => {
     const v = hP.ack.setsvg({ prefix: 'data:image/svg+xml;charset=utf-8,', svg: svg.obj, obj: stage.btn[e].obj });
  
     stage.btn[e].xy.push({ x: stage.btn[e].xy[1].x + stage.btn[e].xy[0].x, y: stage.btn[e].xy[1].y + stage.btn[e].xy[0].y });
@@ -188,33 +189,33 @@ const setload = v => {
 
     if(stage.btn[e].g.length) { hP.art[stage.btn[e].g].rsc.push(e); }
     v.bvr = new Path2D(); /*/ Button Virtual Rect /*/
-    hP.ack.btns[k[i]] = v;
+    hP.ack.btns[e] = v;
   });
 
   /*/ stage > pack > string /*/
-  Object.keys(stage.str).forEach((e, i, k) => {
+  Object.keys(stage.str).forEach(e => {
     const v = {};
     for (let key in stage.str[e]) { v[key] = stage.str[e][key]; }
 
     if(stage.str[e].g.length) { hP.art[stage.str[e].g].rsc.push(e); }
-    hP.ack.strs[k[i]] = v;
+    hP.ack.strs[e] = v;
   });
 
   /*/ stage > pack > event - button /*/
-  Object.keys(stage.evt).forEach((e, i, k) => {
+  Object.keys(stage.evt).forEach(e => {
     const v = {};
     for (let key in stage.evt[e]) { v[key] = stage.evt[e][key]; }
 
     v.dpr = hP.lan.wds.dpr; /*/ devicePixelRatio for position x, y /*/
-    hP.ack.evts[k[i]] = v;
+    hP.ack.evts[e] = v;
   });
 
   /*/ stage > pack > event - timer /*/
-  Object.keys(stage.time).forEach((e, i, k) => {
+  Object.keys(stage.time).forEach(e => {
     const v = {};
     for (let key in stage.time[e]) { v[key] = stage.time[e][key]; }
 
-    hP.ack.times[k[i]] = v;
+    hP.ack.times[e] = v;
   });
 
   /*/  stuff > pack > /*/
@@ -225,7 +226,7 @@ const setload = v => {
   });
 
   /*/  stuff > pack > prop /*/
-  Object.keys(stuff.prop).forEach((e, i, k) => {
+  Object.keys(stuff.prop).forEach(e => {
     const v = hP.ack.setsvg({ prefix: 'data:image/svg+xml;charset=utf-8,', svg: svg.obj, obj: stuff.prop[e].obj });
     for (let key in stuff.prop[e]) { v[key] = stuff.prop[e][key]; }
     
@@ -235,13 +236,13 @@ const setload = v => {
       path.setAttributeNS(null, 'd', d);
       const pathLength = Math.floor(path.getTotalLength());
 
-      hP.lay.paths[k[i]] = {d: path, l: pathLength};
+      hP.lay.paths[e] = {d: path, l: pathLength};
     }
-    hP.ack.props[k[i]] = v;
+    hP.ack.props[e] = v;
   });
 
   /*/  stuff > pack > cast /*/
-  Object.keys(stuff.cast).forEach((e, i, k) => {
+  Object.keys(stuff.cast).forEach(e => {
     const v = hP.ack.setsvg({ prefix: 'data:image/svg+xml;charset=utf-8,', svg: svg.obj, obj: stuff.cast[e].objs });
     for (let key in stuff.cast[e]) { v[key] = stuff.cast[e][key]; }
 
@@ -251,18 +252,18 @@ const setload = v => {
       path.setAttributeNS(null, 'd', d);
       const pathLength = Math.floor(path.getTotalLength());
 
-      hP.lay.paths[k[i]] = {d: path, l: pathLength};
+      hP.lay.paths[e] = {d: path, l: pathLength};
     }
-    hP.ack.casts[k[i]] = v;
+    hP.ack.casts[e] = v;
   });
 
   /*/ stuff > pack > effect /*/
-  Object.keys(stuff.eft).forEach((e, i, k) => {
+  Object.keys(stuff.eft).forEach(e => {
     const v = {};
     for (let key in stuff.eft[e]) { v[key] = stuff.eft[e][key]; }
 
-    v.fn = hP.ack['set' + stuff.eft[e].type];
-    hP.ack.efts[k[i]] = v;
+    // v.fn = hP.ack['set' + stuff.eft[e].type];
+    hP.ack.efts[e] = v;
   });
   /*/  Pack > scene /*/
 
@@ -308,7 +309,7 @@ const setload = v => {
       const v = { ...hP.ack.evts[e], domain: hP.lot.domain, btns: hP.ack[hP.ack.evts[e].g], cx: hP.age.cx, hplan: hP.lan };
       hP.lay['put'+hP.ack.evts[e].type](v);
     });
-    Object.keys(hP.ack.efts /*/ EFfecTS /*/).forEach(e => hP.lay['set'+hP.ack.efts[e].type](hP.ack.efts[e]));
+    Object.keys(hP.ack.efts /*/ EFfecTS /*/).forEach(e => hP.lay[hP.ack.efts[e].type].set(hP.ack.efts[e]));
     
     hP.lay.fb.set({ ps: hP.art.fbps /*/ Flip Book PageS - array /*/, cx: cx, pos: xy, r: hP.age.r });
 
