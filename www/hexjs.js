@@ -75,7 +75,6 @@
         this.cs = cs; /*/ hP.age.cs - CanvaS element /*/
         this.cx = cx; /*/ hP.age.cx - ConteXt element /*/
 
-
         this.touch.start = touch ? 'touchstart' : 'mousedown';
         this.touch.move = touch ? 'touchmove' : 'mousemove';
         this.touch.end = touch ? 'touchend' : 'mouseup';
@@ -604,9 +603,19 @@
       /*/ play > trace < /*/
 
       /*/ play > setparticle > /*/
-      Play.prototype.particle =  { len: 0, xy: [{ x: 0, y: 0 }, { x: 0, y: 0 }], wh : [{ w: 0, h: 0 }, { w: 0, h: 0 }]};
+      Play.prototype.particle =  { /*/ snow: { len: 0, xy: [{ x: 0, y: 0 }, { x: 0, y: 0 }], wh : [{ w: 0, h: 0 }, { w: 0, h: 0 }]} /*/ };
       Play.prototype.particle.set = function (v) {
        
+
+
+
+
+
+
+
+
+
+
       }
       /*/ Modules Function Structure > Play < /*/
 

@@ -261,6 +261,10 @@ const setload = v => {
   Object.keys(stuff.eft).forEach(e => {
     const v = {};
     for (let key in stuff.eft[e]) { v[key] = stuff.eft[e][key]; }
+    console.log(v);
+    hP.lay.particle.g = {};
+    hP.lay.particle.g.len = v.len;
+    hP.lay.particle.g.type = v.type;
 
     // v.fn = hP.ack['set' + stuff.eft[e].type];
     hP.ack.efts[e] = v;
