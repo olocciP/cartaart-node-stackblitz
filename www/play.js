@@ -87,7 +87,9 @@ const setload = v => {
   /*/ stage > part /*/
   Object.keys(stage.part).forEach(e => {
     const v = {};
-    for (let key in stage.part[e]) { v[key] = stage.part[e][key]; }
+    const o = stage.part[e];
+    Object.keys(o).forEach(e => { v[e] = o[e] });
+    // for (let key in stage.part[e]) { v[key] = stage.part[e][key]; }
 
     hP.art[e] = v;
   });
@@ -95,7 +97,9 @@ const setload = v => {
   /*/ stuff > part /*/
   Object.keys(stuff.part).forEach(e => {
     const v = {};
-    for (let key in stuff.part[e]) { v[key] = stuff.part[e][key]; }
+    const o = stuff.part[e];
+    Object.keys(o).forEach(e => { v[e] = o[e] });
+    // for (let key in stuff.part[e]) { v[key] = stuff.part[e][key]; }
 
     hP.art[e] = v;
   });
@@ -103,8 +107,8 @@ const setload = v => {
   /*/ stuff > part > flipbook /*/
   Object.keys(stuff.flipbook).forEach(e => {
     const v = {};
-
-    for (let key in stuff.flipbook[e]) { v[key] = stuff.flipbook[e][key]; }
+    const o = stuff.flipbook[e];
+    Object.keys(o).forEach(e => { v[e] = o[e] });
 
     hP.lay.fb.on = false; /*/ true, false /*/
     hP.lay.fb.off = 0; /*/ -1, 0 ,1 /*/
@@ -132,8 +136,10 @@ const setload = v => {
   /*/ stuff > part > trace /*/
   Object.keys(stuff.trace).forEach(e => {
     const v = hP.art.setpath({ svg: svg.obj, obj: stuff.trace[e].obj });
+    const o = stuff.trace[e];
+    Object.keys(o).forEach(e => { v[e] = o[e] });
+    // for (let key in stuff.trace[e]) { v[key] = stuff.trace[e][key]; }
 
-    for (let key in stuff.trace[e]) { v[key] = stuff.trace[e][key]; }
     v.ss.cnt = 1;
     v.ss.len = Object.keys(v.p2s).length - 1;
     v.drag = {};
@@ -151,7 +157,9 @@ const setload = v => {
   /*/ stage > pack > gradient /*/
   Object.keys(stage.gradient).forEach(e  => {
     const v = {};
-    for (let key in stage.gradient[e]) { v[key] = stage.gradient[e][key]; }
+    const o = stage.gradient[e];
+    Object.keys(o).forEach(e => { v[e] = o[e] });
+    // for (let key in stage.gradient[e]) { v[key] = stage.gradient[e][key]; }
     v.fn = hP.ack['set' + stage.gradient[e].type];
 
     if(stage.gradient[e].g.length) { hP.art[stage.gradient[e].g].rsc.push(e); }
@@ -162,8 +170,9 @@ const setload = v => {
   /*/ stage > pack > face /*/
   Object.keys(stage.face).forEach(e => {
     const v = hP.ack.setsvg({ prefix: 'data:image/svg+xml;charset=utf-8,', svg: svg.obj, obj: stage.face[e].obj });
-    
-    for (let key in stage.face[e]) { v[key] = stage.face[e][key]; }
+    const o = stage.face[e];
+    Object.keys(o).forEach(e => { v[e] = o[e] });
+    // for (let key in stage.face[e]) { v[key] = stage.face[e][key]; }
     
     if(stage.face[e].g.length) { hP.art[stage.face[e].g].rsc.push(e); }
     hP.ack.faces[e] = v;
@@ -172,7 +181,9 @@ const setload = v => {
   /*/ stage > pack > shape /*/
   Object.keys(stage.shape).forEach(e => {
     const v = {};
-    for (let key in stage.shape[e]) { v[key] = stage.shape[e][key]; }
+    const o = stage.shape[e];
+    Object.keys(o).forEach(e => { v[e] = o[e] });
+    // for (let key in stage.shape[e]) { v[key] = stage.shape[e][key]; }
     v.fn = hP.ack['set' + stage.shape[e].type];
 
     if(stage.shape[e].g.length) { hP.art[stage.shape[e].g].rsc.push(e); }
@@ -182,10 +193,11 @@ const setload = v => {
   /*/ stage > pack > button /*/
   Object.keys(stage.btn).forEach(e => {
     const v = hP.ack.setsvg({ prefix: 'data:image/svg+xml;charset=utf-8,', svg: svg.obj, obj: stage.btn[e].obj });
- 
-    stage.btn[e].xy.push({ x: stage.btn[e].xy[1].x + stage.btn[e].xy[0].x, y: stage.btn[e].xy[1].y + stage.btn[e].xy[0].y });
-    stage.btn[e].wh.push({ w: stage.btn[e].wh[1].w + stage.btn[e].wh[0].w, h: stage.btn[e].wh[1].h + stage.btn[e].wh[0].h });
-    for (let key in stage.btn[e]) { v[key] = stage.btn[e][key]; }
+    const o = stage.btn[e];
+    o.xy.push({ x: o.xy[1].x + o.xy[0].x, y: o.xy[1].y + o.xy[0].y });
+    o.wh.push({ w: o.wh[1].w + o.wh[0].w, h: o.wh[1].h + o.wh[0].h });
+    Object.keys(o).forEach(e => { v[e] = o[e] });
+    // for (let key in stage.btn[e]) { v[key] = stage.btn[e][key]; }
 
     if(stage.btn[e].g.length) { hP.art[stage.btn[e].g].rsc.push(e); }
     v.bvr = new Path2D(); /*/ Button Virtual Rect /*/
@@ -195,7 +207,9 @@ const setload = v => {
   /*/ stage > pack > string /*/
   Object.keys(stage.str).forEach(e => {
     const v = {};
-    for (let key in stage.str[e]) { v[key] = stage.str[e][key]; }
+    const o = stage.str[e];
+    Object.keys(o).forEach(e => { v[e] = o[e] });
+    // for (let key in stage.str[e]) { v[key] = stage.str[e][key]; }
 
     if(stage.str[e].g.length) { hP.art[stage.str[e].g].rsc.push(e); }
     hP.ack.strs[e] = v;
@@ -204,7 +218,9 @@ const setload = v => {
   /*/ stage > pack > event - button /*/
   Object.keys(stage.evt).forEach(e => {
     const v = {};
-    for (let key in stage.evt[e]) { v[key] = stage.evt[e][key]; }
+    const o = stage.evt[e];
+    Object.keys(o).forEach(e => { v[e] = o[e] });
+    // for (let key in stage.evt[e]) { v[key] = stage.evt[e][key]; }
 
     v.dpr = hP.lan.wds.dpr; /*/ devicePixelRatio for position x, y /*/
     hP.ack.evts[e] = v;
@@ -213,7 +229,9 @@ const setload = v => {
   /*/ stage > pack > event - timer /*/
   Object.keys(stage.time).forEach(e => {
     const v = {};
-    for (let key in stage.time[e]) { v[key] = stage.time[e][key]; }
+    const o = stage.time[e];
+    Object.keys(o).forEach(e => { v[e] = o[e] });
+    // for (let key in stage.time[e]) { v[key] = stage.time[e][key]; }
 
     hP.ack.times[e] = v;
   });
@@ -221,14 +239,19 @@ const setload = v => {
   /*/  stuff > pack > /*/
   Object.keys(stuff.part).forEach(e => {
     const v = {};
-    for (let key in stuff.part[e]) { v[key] = stuff.part[e][key]; }
+    const o = stage.part[e];
+    Object.keys(o).forEach(e => { v[e] = o[e] });
+    // for (let key in stuff.part[e]) { v[key] = stuff.part[e][key]; }
+
     hP.art[e] = v;
   });
 
   /*/  stuff > pack > prop /*/
   Object.keys(stuff.prop).forEach(e => {
     const v = hP.ack.setsvg({ prefix: 'data:image/svg+xml;charset=utf-8,', svg: svg.obj, obj: stuff.prop[e].obj });
-    for (let key in stuff.prop[e]) { v[key] = stuff.prop[e][key]; }
+    const o = stuff.prop[e];
+    Object.keys(o).forEach(e => { v[e] = o[e] });
+    // for (let key in stuff.prop[e]) { v[key] = stuff.prop[e][key]; }
     
     const d = stuff.prop[e].path;
     if(d.length) {
@@ -244,7 +267,9 @@ const setload = v => {
   /*/  stuff > pack > cast /*/
   Object.keys(stuff.cast).forEach(e => {
     const v = hP.ack.setsvg({ prefix: 'data:image/svg+xml;charset=utf-8,', svg: svg.obj, obj: stuff.cast[e].objs });
-    for (let key in stuff.cast[e]) { v[key] = stuff.cast[e][key]; }
+    const o = stuff.cast[e];
+    Object.keys(o).forEach(e => { v[e] = o[e] });
+    // for (let key in stuff.cast[e]) { v[key] = stuff.cast[e][key]; }
 
     const d = stuff.cast[e].path;
     if(d.length) {
@@ -260,8 +285,10 @@ const setload = v => {
   /*/ stuff > pack > effect /*/
   Object.keys(stuff.eft).forEach(e => {
     const v = {};
-    for (let key in stuff.eft[e]) { v[key] = stuff.eft[e][key]; }
-    console.log(v);
+    const o = stuff.eft[e];
+    Object.keys(o).forEach(e => { v[e] = o[e] });
+    // for (let key in stuff.eft[e]) { v[key] = stuff.eft[e][key]; }
+
     hP.lay.particle.g = {};
     hP.lay.particle.g.len = v.len;
     hP.lay.particle.g.type = v.type;
